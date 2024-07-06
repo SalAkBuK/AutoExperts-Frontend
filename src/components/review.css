@@ -1,0 +1,49 @@
+/* Review.css */
+
+.cover{
+  width: 100%;
+  background-color: #322F2F;
+}
+.wrapper {
+  width: 75%; /* 3/4 of the parent width */
+  margin: auto; /* Center horizontally */
+  
+}
+
+.inner-wrapper {
+  margin-top: 45px; /* Margin top 100px */
+  
+}
+.review-card {
+  background-color: transparent; /* Blue background */
+  height: 250px;
+  color: #000; /* Black text */
+  border-radius: 1rem;
+}
+
+
+.review-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+}
+.Heading {
+  text-align: center;
+  font-size: 3rem;
+  color: red;
+}
+.name {
+  font-size: 2rem;
+  font-weight: 600;
+  color: red;
+  font-family: Angkor, serif; /* Use Angkor font */
+}
+
+.review {
+  text-align: center;
+  font-family: 'Archivo Black', sans-serif; /* Use Archivo Black font */
+  font-size: 1.2rem;
+}
