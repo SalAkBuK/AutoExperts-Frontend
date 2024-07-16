@@ -1,16 +1,23 @@
-import Header from "../components/Header";
-import Options from "../components/Options";
-import Review from "../components/Review"
+import CarHeader from "../components/CarHeader";
+import Reviews_2 from "../components/Reviews_2"
 import React from "react";
-import Footer from "../components/Footer"
+import FooterOne from "../components/FooterOne"
+import OurServices from "../components/OurServices";
+import ReadyToSignUp from "../components/ReadyToSignUp";
+import AboutUs from '../components/AboutUs';
+import CarAuction from "../components/CarAuction";
 
 function landingPage() {
   return (
     <>
-      <Header />
-      <Options />
-      <Review/>
-      <Footer/>
+      <CarHeader />
+      <CarAuction/>
+      <OurServices/>
+      <ReadyToSignUp/>
+      <AboutUs/>
+      
+      <Reviews_2/>
+      <FooterOne/>
     </>
   );
 }

@@ -3,9 +3,9 @@ import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
-
-
-
+import Arrow from '../assets/SlotBooking/Arrow.svg';
+import  MainHeader from '../components/MainHeader';
+import FooterOne from '../components/FooterOne';
 
 const UserForm = () => {
   const [otp, setOtp] = useState("");
@@ -21,11 +21,6 @@ const UserForm = () => {
 
   const currentDate = new Date().toISOString().split('T')[0];
   const currentTime = new Date().toTimeString().split(' ')[0];
-
-
-  
-
-
 
   const formik = useFormik({
     initialValues: {
@@ -55,45 +50,22 @@ const UserForm = () => {
       if (otpVerified) {
         try {
           const response = await axios.post("http://localhost:5000/api/bookings/submit-form", values);
-          console.log(response.data)
           if (response.data.success) {
             alert("Form submitted successfully");
-            // Clear form fields
-      setFormData({
-        name: '',
-        contactNumber: '',
-        email: '',
-        address: '',
-        date: '',
-        time: '',
-      });
-          } else if(!response.data.success) {
+            formik.resetForm();
+          } else if (!response.data.success) {
             if (response.data.message && response.data.message.includes('Booking already exists for this date and time')) {
               alert("Booking already exists for this date and time");
             } else {
               alert("Failed to submit form: " + (response.data.message ? response.data.message : "Unknown error"));
             }
-            setFormData({
-              name: '',
-              contactNumber: '',
-              email: '',
-              address: '',
-              date: '',
-              time: '',
-            });
-        } else{
-          alert("You are having problem... ")
-        } 
-      }catch (error) {
+            formik.resetForm();
+          } else {
+            alert("You are having problem...");
+          }
+        } catch (error) {
           alert("Error submitting form");
-          setFormData({
-            name: '',
-            contactNumber: '',
-            email: '',
-            address: '',
-            date: '',
-            time: '',
-          });
+          formik.resetForm();
         }
       } else {
         alert("Please verify OTP first");
@@ -136,10 +108,6 @@ const UserForm = () => {
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     try {
-      console.log('Verifying OTP...');
-      console.log('Contact Number:', formik.values.contactNumber);
-      console.log('OTP:', otp);
-
       const response = await axios.post("http://localhost:5000/api/bookings/verify-otp", {
         contactNumber: formik.values.contactNumber,
         otp,
@@ -149,8 +117,6 @@ const UserForm = () => {
           "Content-Type": "application/json",
         },
       });
-
-      console.log('Response from server:', response.data);
 
       if (response.data.success) {
         setOtpVerified(true);
@@ -165,108 +131,188 @@ const UserForm = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={formik.handleSubmit}>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.name && formik.errors.name ? (
-            <div>{formik.errors.name}</div>
-          ) : null}
-        </div>
-        <div>
-          <label>Contact Number:</label>
-          <input
-            type="tel"
-            name="contactNumber"
-            value={formik.values.contactNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.contactNumber && formik.errors.contactNumber ? (
-            <div>{formik.errors.contactNumber}</div>
-          ) : null}
-          <button onClick={handleSendOtp} disabled={otpSent || !formik.values.contactNumber}>
-            Send OTP
-          </button>
-        </div>
-        {otpSent && !otpVerified && (
-          <div>
-            <label>OTP:</label>
+<>
+    <MainHeader/>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100  pt-20  ">
+    <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+      <h1 className="text-3xl font-bold text-center ">SLOT BOOKING</h1>
+      <form onSubmit={formik.handleSubmit} className="space-y-4 ">
+        {/* Row 1 */}
+        
+        <h2 className="text-xl font-bold text-left mb-6">Book you Slot Now</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col">
+            <label htmlFor="name" className="text-gray-700">Name:</label>
             <input
+              id="name"
               type="text"
-              value={otp}
-              onChange={handleOtpChange}
-              required
+              name="name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              style={{ background: '#F6F9FF' }}
             />
-            <button onClick={handleVerifyOtp}>Verify OTP</button>
+            {formik.touched.name && formik.errors.name ? (
+              <div className="text-red-500 text-sm mt-1">{formik.errors.name}</div>
+            ) : null}
           </div>
-        )}
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.email && formik.errors.email ? (
-            <div>{formik.errors.email}</div>
-          ) : null}
+          
+          <div className="flex flex-col">
+            <label htmlFor="contactNumber" className="text-gray-700">Contact Number:</label>
+            <div className="flex">
+              <input
+                id="contactNumber"
+                type="tel"
+                name="contactNumber"
+                value={formik.values.contactNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                style={{ background: '#F6F9FF' }}
+              />
+              <button
+                onClick={handleSendOtp}
+                disabled={otpSent || !formik.values.contactNumber}
+                type="button"
+                className="ml-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              >
+                Verify
+              </button>
+            </div>
+            {formik.touched.contactNumber && formik.errors.contactNumber ? (
+              <div className="text-red-500 text-sm mt-1">{formik.errors.contactNumber}</div>
+            ) : null}
+          </div>
         </div>
-        <div>
-          <label>Address:</label>
-          <input
-            type="text"
-            name="address"
-            value={formik.values.address}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.address && formik.errors.address ? (
-            <div>{formik.errors.address}</div>
-          ) : null}
+  
+        {/* Row 2 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {otpSent && !otpVerified && (
+            <div className="flex flex-col">
+              <label htmlFor="otp" className="text-gray-700">OTP:</label>
+              <div className="flex">
+                <input
+                  id="otp"
+                  type="text"
+                  value={otp}
+                  onChange={handleOtpChange}
+                  required
+                  className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  style={{ background: '#F6F9FF' }}
+                />
+                <button
+                  onClick={handleVerifyOtp}
+                  type="button"
+                  className="ml-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          )}
+  
+          <div className="flex flex-col">
+            <label htmlFor="email" className="text-gray-700">Email:</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              style={{ background: '#F6F9FF' }}
+            />
+            {formik.touched.email && formik.errors.email ? (
+              <div className="text-red-500 text-sm mt-1">{formik.errors.email}</div>
+            ) : null}
+          </div>
         </div>
-        <div>
-          <label>Date:</label>
-          <input
-            type="date"
-            name="date"
-            value={formik.values.date}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            min={currentDate} required 
-          />
-          {formik.touched.date && formik.errors.date ? (
-            <div>{formik.errors.date}</div>
-          ) : null}
+  
+        {/* Row 3 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col">
+            <label htmlFor="address" className="text-gray-700">Address:</label>
+            <input
+              id="address"
+              type="text"
+              name="address"
+              value={formik.values.address}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              style={{ background: '#F6F9FF' }}
+            />
+            {formik.touched.address && formik.errors.address ? (
+              <div className="text-red-500 text-sm mt-1">{formik.errors.address}</div>
+            ) : null}
+          </div>
+  
+          <div className="flex flex-col">
+            <label htmlFor="date" className="text-gray-700">Date:</label>
+            <input
+              id="date"
+              type="date"
+              name="date"
+              value={formik.values.date}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              min={currentDate}
+              required
+              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              style={{ background: '#F6F9FF' }}
+            />
+            {formik.touched.date && formik.errors.date ? (
+              <div className="text-red-500 text-sm mt-1">{formik.errors.date}</div>
+            ) : null}
+          </div>
         </div>
-        <div>
-          <label>Time:</label>
+  
+        {/* Row 4 */}
+        <div className="flex flex-col">
+          <label htmlFor="time" className="text-gray-700">Time:</label>
           <Select
+            id="time"
             name="time"
             options={timeOptions}
             value={timeOptions.find(option => option.value === formik.values.time)}
-            onChange={(option) => formik.setFieldValue("time", option.value)}
+            onChange={option => formik.setFieldValue('time', option.value)}
             onBlur={formik.handleBlur}
-            min={currentTime} required
+            className="border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+            required
+            style={{ background: '#F6F9FF' }}
           />
           {formik.touched.time && formik.errors.time ? (
-            <div>{formik.errors.time}</div>
+            <div className="text-red-500 text-sm mt-1">{formik.errors.time}</div>
           ) : null}
         </div>
-        <button type="submit" disabled={!otpVerified}>
-          Submit
-        </button>
+  
+        {/* Submit Button */}
+        <div className="flex justify-end">
+        {otpVerified && (
+          <button
+            type="submit"
+            disabled={!otpVerified}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-3 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          >
+            
+            Book Now
+            <img src={Arrow} alt="Arrow Icon" className="w-5 h-5 mr-1" />
+            
+          </button>
+        )}
+        </div>
       </form>
-    </div>
+  
+    </div>       
+  
+  </div>
+  <FooterOne/>
+  
+  
+  </>
   );
 };
 
