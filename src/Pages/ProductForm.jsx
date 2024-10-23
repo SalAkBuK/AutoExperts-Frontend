@@ -91,31 +91,109 @@ useEffect(() => {
   };
 
   return (
-    <div>
-      <h2>Add Product</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Title:</label>
-        <input type="text" name="title" value={formData.title} onChange={handleInputChange} required />
+    <div className="bg-gray-100 min-h-screen flex flex-col justify-center items-center py-8">
+    <h2 className="text-3xl font-bold text-gray-800 mb-4">Add Product</h2>
+    <form className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
+          Title:
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="title"
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
 
-        <label>Price:</label>
-        <input type="number" name="price" value={formData.price} onChange={handleInputChange} required />
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="price">
+          Price:
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="price"
+          type="number"
+          name="price"
+          value={formData.price}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
 
-        <label>Model:</label>
-        <input type="text" name="model" value={formData.model} onChange={handleInputChange} required />
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="model">
+          Model:
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="model"
+          type="text"
+          name="model"
+          value={formData.model}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
 
-        <label>Mileage:</label>
-        <input type="text" name="mileage" value={formData.mileage} onChange={handleInputChange} required />
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="mileage">
+          Mileage:
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="mileage"
+          type="text"
+          name="mileage"
+          value={formData.mileage}
+          onChange={handleInputChange}
+          required
+        />
+      </div>
 
-        <label>Images:</label>
-        <input type="file" accept="image/*" multiple onChange={handleImageChange} required />
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="images">
+          Images:
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="images"
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleImageChange}
+          required
+        />
+      </div>
 
-        <label>PDF:</label>
-        <input type="file" accept=".pdf" onChange={handlePDFChange} required />
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="pdf">
+          PDF:
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="pdf"
+          type="file"
+          accept=".pdf"
+          onChange={handlePDFChange}
+          required
+        />
+      </div>
 
-        <button type="submit">Add Product</button>
-      </form>
-    </div>
-  );
+      <div className="flex items-center justify-end">
+        <button
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Add Product
+        </button>
+      </div>
+    </form>
+  </div>
+);  
 };
 
 export default Form;

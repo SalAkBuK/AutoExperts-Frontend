@@ -1,13 +1,4 @@
-.footer {
-    display: flex;
-    flex-wrap: wrap; /* Allow items to wrap to new lines */
-    justify-content: center; /* Center items horizontally */
-    align-items: center;
-    background-color: black;
-    
-    margin-top: 0;
-    
-  }
+
   
   .footer-content {
     display: flex;

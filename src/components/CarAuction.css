@@ -1,0 +1,23 @@
+.auction{
+    transition: transform 0.3s ease-in-out;
+    margin-right: 120px;
+    transition: transform 0.3s ease-in-out;
+    
+}
+.text-settings{
+    margin-left: 200px;
+}
+h1{
+    text-align: right;
+}
+.settings{
+    padding-bottom: 14px;
+}
+
+
+.auction img {
+    transition: transform 0.3s ease-in-out; /* Smooth transition for image hover */
+  }
+.auction:hover img {
+    transform: scale(1.1); /* Zoom in on image hover */
+  }

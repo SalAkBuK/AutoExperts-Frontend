@@ -33,6 +33,9 @@ import Predictor from './Pages/Predictor';
 import Member from './Pages/Member'
 import MemberLogin from './Pages/MemberLogin';
 import MemberSignin from './Pages/MemberSignin';
+import ScrollToTop from './components/ScrollToTop';
+import Logout from './components/Logout';
+
 
 function App() {
 
@@ -40,6 +43,8 @@ function App() {
   return (
     <>
        <BrowserRouter>
+       <div className="flex flex-col min-h-screen">
+       <ScrollToTop />
       <Routes>
         <Route path="/" element={ <LandingPage />} />
         <Route path="/admin" element={ <AdminLogin />} />
@@ -47,14 +52,17 @@ function App() {
         <Route path= "/booking-form" element = {<InspectionForm/>} />
         <Route path= "/booking-details" element = {<CheckBooking/>} />
         <Route path="/product-form" element={<ProductForm />} />
+        
         <Route path="/collection" element={<ProductList />} />
         <Route path="/predictor" element={<Predictor />} />
         <Route path="/member" element={<Member />} />
         <Route path="/member-login" element={<MemberLogin />} />
         <Route path="/member-signin" element={<MemberSignin />} />
+        <Route path = "/logout" element={<Logout />}/>
         {/* Add a catch-all route to handle unauthorized access */}
         <Route path="*" element={<Navigate to="/admin" replace />} />
       </Routes>
+      </div>
     </BrowserRouter>
     </>
   )
