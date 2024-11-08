@@ -50,6 +50,7 @@ function Login() {
 </div>
       </div>
     </div>
+
     <div className="flex w-full lg:w-1/3 justify-center items-center bg-white mx-10 lg:mx-20 mt-10 mb-10 lg:my-20  shadow-lg rounded-r-3xl">
       <div className="w-full max-w-md p-8 sm:p-6 md:py-4">
         <h2 className="text-2xl font-bold text-center mb-6">Admin Login</h2>

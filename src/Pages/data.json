@@ -1,0 +1,39 @@
+{
+    "vehicle": {
+      "title": "2021 VOLKSWAGEN TIGUAN SE",
+      "images": [
+        "https://via.placeholder.com/600x400",
+        "https://via.placeholder.com/100",
+        "https://via.placeholder.com/100",
+        "https://via.placeholder.com/100",
+        "https://via.placeholder.com/100",
+        "https://via.placeholder.com/100"
+      ],
+      "details": {
+        "lotNumber": "40183214",
+        "vin": "3VV2B7AX2MM******",
+        "titleCode": "CT - CERT OF TITLE - PARTS ONLY SALVA",
+        "odometer": "53,076 mi (ACTUAL)",
+        "primaryDamage": "FRONT END",
+        "cylinders": 4,
+        "color": "WHITE",
+        "engineType": "2.0L 4",
+        "transmission": "AUTOMATIC",
+        "drive": "All Wheel Drive",
+        "vehicleType": "AUTOMOBILE",
+        "fuel": "GAS",
+        "keys": "YES"
+      }
+    },
+    "bidInfo": {
+      "auctionStatus": "Live Auction In Progress",
+      "bidStatus": "YOU HAVEN'T BID",
+      "eligibilityStatus": "Not Eligible to Bid. Check Why?",
+      "saleStatus": "Minimum Bid",
+      "currentBid": "$3,550.00 USD"
+    },
+    "saleInfo": {
+      "saleName": "CT - HARTFORD"
+    }
+  }
+  
