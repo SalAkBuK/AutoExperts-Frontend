@@ -39,6 +39,7 @@ import AuctionProduct from './Pages/AuctionProduct';
 import AuctionPlatform from './Pages/AuctionPlatform';
 import AddCarForm from './Pages/AddCarForm';
 import AuctionList from './Pages/AuctionList';
+import CarDetail from './Pages/CarDetail';
 function App() {
 
 
@@ -64,6 +65,7 @@ function App() {
 
         <Route path = "/auction-platform" element={<AuctionPlatform />}/>
         <Route path="/car/:carId" element={<AuctionProduct/>} />
+        <Route path="/car-details" element={<CarDetail/>} />
         <Route path = "/logout" element={<Logout />}/>
         {/* Add a catch-all route to handle unauthorized access */}
         <Route path="*" element={<Navigate to="/admin" replace />} />

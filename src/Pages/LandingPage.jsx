@@ -6,8 +6,6 @@ import OurServices from "../components/OurServices";
 import ReadyToSignUp from "../components/ReadyToSignUp";
 import AboutUs from '../components/AboutUs';
 import CarAuction from "../components/CarAuction";
-import AuctionPlatform from "./AuctionPlatform";
-import AuctionProduct from "./AuctionProduct";
 
 function landingPage() {
   return (
@@ -20,7 +18,7 @@ function landingPage() {
       
       <Reviews_2/>
       <FooterOne/>
-      <AuctionProduct/>
+     
     </>
   );
 }

@@ -6,7 +6,7 @@ import { FaTag, FaGasPump, FaTachometerAlt, FaRegClock } from 'react-icons/fa';
 import axios from 'axios';
 import FooterOne from '../components/FooterOne';
 
-const ITEMS_PER_PAGE = 3; // Define items per page
+const ITEMS_PER_PAGE = 8; // Define items per page
 
 function AuctionPlatform() {
   const [cars, setCars] = useState([]); // Store API data
@@ -59,7 +59,7 @@ function AuctionPlatform() {
     <CarHeader />
     <mian className='flex-grow'>
     <div className="bg-gray-50 min-h-screen p-8 space-y-8">
-  <h1 className="text-3xl font-extrabold text-gray-900 mb-6" style={{ fontFamily: 'DM Sans', fontSize: '40px', fontWeight: 700 }}>
+  <h1 className="text-2xl font-bold text-gray-900 mb-6" style={{ fontFamily: 'DM Sans', fontSize: '40px', fontWeight: 700 }}>
     Cars Available for Auction
   </h1>
 
@@ -140,7 +140,7 @@ function AuctionPlatform() {
                 <FaTag className="mr-2 text-gray-600" />
                 Highest Bid: {car.highestBid ? `$${car.highestBid.bidAmount.toLocaleString()}` : 'No Bids Yet'}
               </div>
-              <div className="flex items-center text-sm font-bold text-red-600">
+              <div className="flex items-center text-sm font-semibold text-red-600">
                 <FaRegClock className="mr-2 text-gray-600" />
                 Time Left: {car.auctionEndTime ? new Date(car.auctionEndTime).toLocaleString() : 'Auction Ended'}
               </div>
