@@ -27,6 +27,8 @@ function BidInformation({ bidInfo }) {
     handleCloseModal();
   };
 
+  
+
   return (
     <div className="border p-4 rounded shadow-sm">
       <h2 className="font-bold text-lg">Bid Information</h2>

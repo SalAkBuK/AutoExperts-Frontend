@@ -35,8 +35,10 @@ import MemberLogin from './Pages/MemberLogin';
 import MemberSignin from './Pages/MemberSignin';
 import ScrollToTop from './components/ScrollToTop';
 import Logout from './components/Logout';
-
-
+import AuctionProduct from './Pages/AuctionProduct';
+import AuctionPlatform from './Pages/AuctionPlatform';
+import AddCarForm from './Pages/AddCarForm';
+import AuctionList from './Pages/AuctionList';
 function App() {
 
 
@@ -52,12 +54,16 @@ function App() {
         <Route path= "/booking-form" element = {<InspectionForm/>} />
         <Route path= "/booking-details" element = {<CheckBooking/>} />
         <Route path="/product-form" element={<ProductForm />} />
-        
+        <Route path="/add-car-form" element={<AddCarForm />} />
+        <Route path="/auction-car-list" element={<AuctionList />} />
         <Route path="/collection" element={<ProductList />} />
         <Route path="/predictor" element={<Predictor />} />
         <Route path="/member" element={<Member />} />
         <Route path="/member-login" element={<MemberLogin />} />
         <Route path="/member-signin" element={<MemberSignin />} />
+
+        <Route path = "/auction-platform" element={<AuctionPlatform />}/>
+        <Route path="/car/:carId" element={<AuctionProduct/>} />
         <Route path = "/logout" element={<Logout />}/>
         {/* Add a catch-all route to handle unauthorized access */}
         <Route path="*" element={<Navigate to="/admin" replace />} />

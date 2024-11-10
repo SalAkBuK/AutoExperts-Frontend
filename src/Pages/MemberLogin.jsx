@@ -17,21 +17,27 @@ function MemberLogin() {
 
   const handleLogin = async (values) => {
     try {
-      const response = await axios.post(`http://localhost:5000/admin/login`, {
+      const res = await axios.post('http://localhost:5000/api/auth/login', {
         email: values.email,
         password: values.password,
       });
 
-      console.log("Login successful");
-      console.log("Response:", response.data);
+      console.log("Login successful", res);
+      
+      const { token } = res.data;
+     
 
-      // Store the token in local storage
-    localStorage.setItem('token', response.data.token);
+      // Decode the token to get the member ID
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const memberId = decodedToken.id;
+        console.log("Memberid:", memberId )
+      // Store the token
+      localStorage.setItem('token', token);
 
-      // Redirect to the admin page if login is successful
-      navigate("/dashboard");
+      // Redirect to DisplayAllCars with the memberId
+      navigate('/auction-platform', { state: { memberId } });
     } catch (error) {
-      console.error("Login error:", error.response.data);
+      console.error("Login error:", error.response?.data || error.message);
       // Handle login error (show error message to user, etc.)
     }
   };

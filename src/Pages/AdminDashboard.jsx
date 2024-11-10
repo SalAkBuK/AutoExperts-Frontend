@@ -39,6 +39,18 @@ function AdminDashboard() {
         >
           Slot Booking Details
         </Link>
+        <Link
+          to="/add-car-form"
+          className="bg-blue-500 hover:bg-blue-600 text-center text-white py-3 px-6 rounded-lg shadow-md transition duration-300 inline-block"
+        >
+          Add Cars for Auction
+        </Link>
+        <Link
+          to="/auction-car-list"
+          className="bg-blue-500 hover:bg-blue-600 text-center text-white py-3 px-6 rounded-lg shadow-md transition duration-300 inline-block"
+        >
+          Auction List
+        </Link>
         <div
           className="bg-red-500 hover:bg-red-600 text-center text-white py-3 px-6 rounded-lg shadow-md transition duration-300 inline-block"
         >
