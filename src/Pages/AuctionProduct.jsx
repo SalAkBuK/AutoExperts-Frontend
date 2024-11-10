@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import VehicleDetails from '../components/VehicleDetails';
 import BidInformation from '../components/BidInformation';
 import ImageGallery from '../components/ImageGallery';
+import { FaDollarSign, FaHammer, FaCheckCircle } from 'react-icons/fa';
 import axios from 'axios';
 import io from 'socket.io-client';
 import { useParams, useLocation } from 'react-router-dom';
+import CarHeader from '../components/CarHeader';
+import FooterOne from '../components/FooterOne';
 
 const socket = io('http://localhost:5000', {
   transports: ['websocket'],
@@ -78,49 +81,95 @@ function AuctionProduct() {
   const auctionEnded = currentTime >= auctionEndTime;
 
   return (
+    <div className="flex flex-col min-h-screen">
+    <CarHeader />
+    <mian className='flex-grow'>
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4 text-left">{car.title}</h1>
+
       <div className="flex flex-col lg:flex-row gap-4">
-        <ImageGallery images={car.images} />
-        <div className="flex flex-col gap-4 grid-cols-2 grid gap-x-11 gap-y-10 grid-cols-2">
-          <VehicleDetails details={car} />
-          <p>Current Highest Bid: ${highestBidAmount}</p>
-          <p>Initial Bid: ${car.initialBid}</p>
-
-          {/* Display AUCTION ENDED message if auction is closed */}
-          {auctionEnded && (
-            <p className="text-red-500 font-bold">AUCTION ENDED</p>
-          )}
-
-          {/* Disable the bid input and button if auction has ended */}
-          {!auctionEnded ? (
-            <div>
-              <h2>Place a Bid</h2>
-              <input
-                type="number"
-                value={bidAmount}
-                onChange={e => setBidAmount(e.target.value)}
-                placeholder="Enter your bid"
-              />
-              <button onClick={handleBid}>Place Bid</button>
+        {/* Bid Information Section */}
+        <div className="flex flex-col gap-4 w-full lg:w-1/2">
+          <div className="space-y-4">
+            <div className="flex items-center">
+              <FaDollarSign className="mr-2 text-gray-600" />
+              <p><strong>Current Highest Bid:</strong> ${highestBidAmount}</p>
             </div>
-          ) : (
-            <div>
-             
-              <input
-                type="number"
-                value={bidAmount}
-                onChange={e => setBidAmount(e.target.value)}
-                placeholder="Enter your bid"
-                disabled
-              />
-              <button onClick={handleBid} disabled>Place Bid</button>
+            <div className="flex items-center">
+              <FaDollarSign className="mr-2 text-gray-600" />
+              <p><strong>Initial Bid:</strong> ${car.initialBid}</p>
             </div>
-          )}
+
+            {/* Display AUCTION ENDED message if auction is closed */}
+            {auctionEnded && (
+              <div className="flex items-center text-red-500 font-bold">
+                <FaHammer className="mr-2" />
+                <p>AUCTION ENDED</p>
+              </div>
+            )}
+
+            {/* Bid input and button */}
+            {!auctionEnded ? (
+              <div className="flex flex-col gap-2">
+                <h2 className="font-semibold text-lg">Place a Bid</h2>
+                <input
+                  type="number"
+                  value={bidAmount}
+                  onChange={e => setBidAmount(e.target.value)}
+                  placeholder="Enter your bid"
+                  className="p-2 border border-gray-300 rounded-md"
+                />
+                <button
+                  onClick={handleBid}
+                  className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-200"
+                >
+                  <FaCheckCircle className="mr-2" />
+                  Place Bid
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <h2 className="font-semibold text-lg">Auction Ended</h2>
+                <input
+                  type="number"
+                  value={bidAmount}
+                  onChange={e => setBidAmount(e.target.value)}
+                  placeholder="Enter your bid"
+                  disabled
+                  className="p-2 border border-gray-300 rounded-md bg-gray-100"
+                />
+                <button
+                  onClick={handleBid}
+                  disabled
+                  className="bg-gray-400 text-white p-2 rounded-md cursor-not-allowed"
+                >
+                  <FaCheckCircle className="mr-2" />
+                  Place Bid
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Image Gallery */}
+        <div className="w-full lg:w-1/2">
+          <ImageGallery images={car.images} />
         </div>
       </div>
+
+      {/* Vehicle Details Section */}
+      <div className="mt-6">
+        <VehicleDetails details={car} />
+      </div>
     </div>
+    </mian>
+<FooterOne/>
+
+
+  </div>
   );
+
+ 
 }
 
 export default AuctionProduct;

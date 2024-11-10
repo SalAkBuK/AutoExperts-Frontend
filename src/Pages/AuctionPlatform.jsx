@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link,useLocation  } from 'react-router-dom';
+import CarHeader from '../components/CarHeader';
 import { TiThList, TiThLarge } from 'react-icons/ti';
+import { FaTag, FaGasPump, FaTachometerAlt, FaRegClock } from 'react-icons/fa';
 import axios from 'axios';
+import FooterOne from '../components/FooterOne';
 
 const ITEMS_PER_PAGE = 3; // Define items per page
 
@@ -52,102 +55,124 @@ function AuctionPlatform() {
   if (loading) return <div className="text-center">Loading...</div>;
 
   return (
-    <div className="bg-gray-100 min-h-screen p-8">
-    <div className="text-2xl font-semibold mb-4">Cars Available for Auction</div>
+    <div className="flex flex-col min-h-screen">
+    <CarHeader />
+    <mian className='flex-grow'>
+    <div className="bg-gray-50 min-h-screen p-8 space-y-8">
+  <h1 className="text-3xl font-extrabold text-gray-900 mb-6" style={{ fontFamily: 'DM Sans', fontSize: '40px', fontWeight: 700 }}>
+    Cars Available for Auction
+  </h1>
 
-    <div className="flex justify-end mb-4">
-        <button
-          onClick={() => setViewType('grid')}
-          className={`mr-4 p-2 ${viewType === 'grid' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-        >
-          <TiThLarge size={24} />
-        </button>
-        <button
-          onClick={() => setViewType('list')}
-          className={`p-2 ${viewType === 'list' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-        >
-          <TiThList size={24} />
-        </button>
-      </div>
-
-    {/* Column Header */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-2 bg-gray-800 text-white p-2 rounded-md mb-5">
-      <div>Image</div>
-      <div>Lot Info</div>
-      <div>Vehicle Info</div>
-      <div>Condition</div>
-      <div>Sale Info</div>
-      <div>Highest Bid</div>
-      <div>Time Left</div>
-    </div>
-
-    {/* Auction Items */}
-    <div
-      className={`grid gap-6 ${
-        viewType === 'grid' ? 'sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'
-      }`}
+  {/* View Toggle */}
+  <div className="flex justify-end mb-6">
+    <button
+      onClick={() => setViewType('grid')}
+      className={`mr-2 p-3 rounded-md ${viewType === 'grid' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200'}`}
     >
-      {currentItems.map((car) => (
-        <Link 
-        to={`/car/${car._id}`}
-        state={{ memberId }}  // Pass memberId to CarDisplay component
-      >
+      <TiThLarge size={24} />
+    </button>
+    <button
+      onClick={() => setViewType('list')}
+      className={`p-3 rounded-md ${viewType === 'list' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200'}`}
+    >
+      <TiThList size={24} />
+    </button>
+  </div>
+
+  {/* Auction Items */}
+  <div
+    className={`grid gap-6 ${
+      viewType === 'grid' ? 'sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'
+    }`}
+  >
+    {currentItems.map((car) => (
+      <Link to={`/car/${car._id}`} state={{ memberId }} key={car._id}>
         <div
-          key={car._id}
-          className={`${
-            viewType === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-4' : 'p-4 bg-white rounded-md shadow-md'
-          } ${viewType === 'list' ? 'border-b' : 'bg-white rounded-md shadow-md'}`}
+          className={`p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 ${
+            viewType === 'list' ? 'border-b flex items-center space-x-6' : 'bg-white'
+          }`}
         >
-          <div className="flex justify-center mb-4">
-          <img src={car.images[0]}
-           alt={car.title}
-           className="w-64 h-48 object-contain rounded-md"
-          />
+          {/* Car Image */}
+          <div className={`${viewType === 'list' ? 'flex-shrink-0' : 'flex justify-center mb-4'}`}>
+            <img
+              src={car.images[0]}
+              alt={car.title}
+              className={`w-full ${viewType === 'list' ? 'h-48 object-contain rounded-md' : 'h-[200px] object-contain rounded-md'}`}
+            />
           </div>
 
-          <div className="flex flex-col space-y-2">
-            <div className="font-semibold text-lg">{car.title}</div>
-            <div className="text-sm text-gray-500">Lot Number: {car.itemNumber}</div>
-            <div className="text-sm text-gray-500">Location: {car.location}</div>
-            <div className="text-sm text-gray-500">Condition: {car.condition}</div>
-            <div className="text-sm text-gray-500">Damage: {car.damage}</div>
-          </div>
-          <div className="flex flex-col space-y-2">
-            <div className="font-semibold">Vehicle Info</div>
-            <div>Model: {car.model}</div>
-            <div>Mileage: {car.mileage} miles</div>
-          </div>
-          <div className="flex flex-col space-y-2">
-            <div className="font-semibold">Sale Info</div>
-            <div>Starting Bid: ${car?.initialBid ? car.initialBid.toLocaleString() : 'N/A'}</div>
-            <div>Highest Bid: {car.highestBid ? `$${car.highestBid.bidAmount}` : 'No Bids Yet'}</div>
-          </div>
-          <div className="flex flex-col space-y-2">
-            <div className="font-semibold">Time Left</div>
-            <div>{car?.auctionEndTime ? new Date(car.auctionEndTime).toLocaleString() : 'Auction Ended'}</div>
+          {/* Car Details */}
+          <div className={`${viewType === 'list' ? 'flex flex-col space-y-2' : 'space-y-2 text-gray-700'}`}>
+            <h2
+              className="text-lg font-semibold text-gray-800 truncate"
+              style={{ fontFamily: 'DM Sans', fontSize: '18px', fontWeight: 500 }}
+            >
+              {car.carDetails}
+            </h2>
+            <p
+              className="text-sm text-gray-500 truncate"
+              style={{ fontFamily: 'DM Sans', fontSize: '14px', fontWeight: 400 }}
+            >
+              {car.Overview}
+            </p>
+            <div className="flex items-center text-sm text-gray-500">
+              <FaGasPump className="mr-2" />
+              Fuel: {car.FuelType}
+            </div>
+            <div className="flex items-center text-sm text-gray-500">
+              <FaTachometerAlt className="mr-2" />
+              Mileage: {car?.mileage?.toLocaleString()} miles
+            </div>
+
+            {/* Auction Info */}
+            <div className="mt-4 text-gray-800 space-y-1">
+              <div
+                className="text-md font-semibold"
+                style={{ fontFamily: 'DM Sans', fontSize: '16px', fontWeight: 600 }}
+              >
+                Auction Details
+              </div>
+              <div className="flex items-center text-sm">
+                <FaTag className="mr-2 text-gray-600" />
+                Starting Bid: ${car?.initialBid?.toLocaleString() || 'N/A'}
+              </div>
+              <div className="flex items-center text-sm">
+                <FaTag className="mr-2 text-gray-600" />
+                Highest Bid: {car.highestBid ? `$${car.highestBid.bidAmount.toLocaleString()}` : 'No Bids Yet'}
+              </div>
+              <div className="flex items-center text-sm font-bold text-red-600">
+                <FaRegClock className="mr-2 text-gray-600" />
+                Time Left: {car.auctionEndTime ? new Date(car.auctionEndTime).toLocaleString() : 'Auction Ended'}
+              </div>
+            </div>
           </div>
         </div>
-        </Link>
-      ))}
-    </div>
+      </Link>
+    ))}
+  </div>
 
-    {/* Pagination */}
-    <div className="flex justify-center mt-4 space-x-4">
-      <button
-        onClick={prevPage}
-        disabled={currentPage === 1}
-        className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-      >
-        Previous
-      </button>
-      <button
-        onClick={nextPage}
-        disabled={currentPage === totalPages}
-        className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-      >
-        Next
-      </button>
-    </div>
+  {/* Pagination */}
+  <div className="flex justify-center mt-8 space-x-4">
+    <button
+      onClick={prevPage}
+      disabled={currentPage === 1}
+      className="px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+    >
+      Previous
+    </button>
+    <button
+      onClick={nextPage}
+      disabled={currentPage === totalPages}
+      className="px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+    >
+      Next
+    </button>
+  </div>
+</div>
+    </mian>
+<FooterOne/>
+
+
   </div>
   );
 }
