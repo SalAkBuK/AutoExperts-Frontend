@@ -56,12 +56,13 @@ const AuctionList = () => {
                 {car.highestBid ? `$${car.highestBid.bidAmount}` : 'No bids yet'}
               </td>
               <td className="border px-4 py-2">
-                {car.status === 'IN-PROGRESS'
-                  ? 'In Progress'
-                  : car.highestBidder
-                  ? car.highestBidder.name
-                  : 'N/A'}
-              </td>
+  {new Date() < new Date(car.auctionEndTime)
+    ? 'In Progress'
+    : car.highestBidder
+    ? car.highestBidder.name
+    : 'N/A'}
+</td>
+
               <td className="border px-4 py-2">
                 {car.topBids && car.topBids.length > 0 ? (
                   <ul className="list-disc pl-5">

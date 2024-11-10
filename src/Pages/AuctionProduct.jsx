@@ -136,7 +136,7 @@ function AuctionProduct() {
                 className="w-full h-full object-cover rounded-lg cursor-pointer"
                 onClick={() => openModal(car.images[0])}
               />
-              <span className="absolute top-2 left-2 bg-green-500 text-white text-sm px-2 py-1 rounded">Great Price</span>
+             
             </div>
             <div className="grid grid-cols-2 gap-2 w-1/2">
               {car.images.slice(1).map((image, index) => (
@@ -216,7 +216,9 @@ function AuctionProduct() {
             <p className="flex items-start">
               <FaTag className="text-gray-600 mr-3" size={24} />
               <span className="text-lg">
-                <span className="font-semibold">Starting Bid:</span> {car.initialBid}
+                <span className="font-semibold">Starting Bid:</span> 
+                
+                <span className="mx-2 bg-green-500 text-white text-sm px-2 py-1 rounded">{car.initialBid}</span>
               </span>
             </p>
   
