@@ -128,29 +128,28 @@ function AuctionProduct() {
   <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">{car.FuelType}</span>
 </div>
 
-{/* Image Gallery */}
-<div className="flex flex-wrap gap-2 mb-8">
-  <div className="relative w-full sm:w-2/3 md:w-2/3 lg:w-2/3 xl:w-2/3">
-    <img
-      src={car.images[0]}
-      alt="Main car"
-      className="w-full h-full object-contain rounded-lg cursor-pointer"
-      onClick={() => openModal(car.images[0])}
-    />
-  </div>
-  
-  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-2 w-full sm:w-1/2">
-    {car.images.slice(1).map((image, index) => (
-      <img
-        key={index}
-        src={image}
-        alt={`Thumb ${index + 1}`}
-        className="object-contain rounded-lg cursor-pointer"
-        onClick={() => openModal(image)}
-      />
-    ))}
-  </div>
-</div>
+{/* Image Gallery */} <div className="flex gap-4 mb-8">
+            <div className="relative w-2/3">
+              <img
+                src={car.images[0]}
+                alt="Main car"
+                className="w-full h-full object-cover rounded-lg cursor-pointer"
+                onClick={() => openModal(car.images[0])}
+              />
+              <span className="absolute top-2 left-2 bg-green-500 text-white text-sm px-2 py-1 rounded">Great Price</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 w-1/2">
+              {car.images.slice(1).map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Thumb ${index + 1}`}
+                  className="object-cover rounded-lg cursor-pointer"
+                  onClick={() => openModal(image)}
+                />
+              ))}
+            </div>
+          </div>
 
         {/* Place Bid Section */}
         <div className="mt-6 mb-4 flex flex-col gap-3">
