@@ -108,6 +108,7 @@ function AuctionProduct() {
             <h1 className="text-3xl font-semibold text-left">{car.title}</h1>
             <p className="text-gray-500">{car.carDetails}</p>
           </div>
+          
           <div className="text-left sm:text-right mt-4 sm:mt-0">
             <p className="text-xl font-semibold text-blue-600">{`Current Highest Bid: $${highestBidAmount}`}</p>
             <div className="flex items-center justify-start sm:col-span-2">
@@ -118,30 +119,39 @@ function AuctionProduct() {
             </div>
           </div>
         </div>
+        <div className="border-t border-gray-300 my-8"></div>
+
+        <div className="flex flex-wrap gap-2 mb-6">
+  <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">{car.model}</span>
+  <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">{car.mileage}{' '}miles</span>
+  <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">Automatic</span>
+  <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">{car.FuelType}</span>
+</div>
+
+{/* Image Gallery */}
+<div className="flex flex-wrap gap-2 mb-8">
+  <div className="relative w-full sm:w-2/3 md:w-2/3 lg:w-2/3 xl:w-2/3">
+    <img
+      src={car.images[0]}
+      alt="Main car"
+      className="w-full h-full object-contain rounded-lg cursor-pointer"
+      onClick={() => openModal(car.images[0])}
+    />
+  </div>
   
-        {/* Image Gallery */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          <div className="relative w-full sm:w-2/3">
-            <img
-              src={car.images[0]}
-              alt="Main car"
-              className="w-full h-full object-cover rounded-lg cursor-pointer"
-              onClick={() => openModal(car.images[0])}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-2 w-full sm:w-1/3">
-            {car.images.slice(1).map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={`Thumb ${index + 1}`}
-                className="object-cover rounded-lg cursor-pointer"
-                onClick={() => openModal(image)}
-              />
-            ))}
-          </div>
-        </div>
-  
+  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-2 w-full sm:w-1/2">
+    {car.images.slice(1).map((image, index) => (
+      <img
+        key={index}
+        src={image}
+        alt={`Thumb ${index + 1}`}
+        className="object-contain rounded-lg cursor-pointer"
+        onClick={() => openModal(image)}
+      />
+    ))}
+  </div>
+</div>
+
         {/* Place Bid Section */}
         <div className="mt-6 mb-4 flex flex-col gap-3">
           <h2 className="font-semibold text-xl">Place a Bid</h2>
@@ -168,14 +178,14 @@ function AuctionProduct() {
             </h2>
           )}
         </div>
-  
+        <div className="border-t border-gray-300 my-8"></div>
         {/* Car Details */}
         <div>
           <h3 className="text-3xl font-semibold mb-6">Car Overview</h3>
   
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8 text-gray-800">
             <p className="flex items-start">
-              <FaCar className="text-gray-600 mr-3"  size={70} />
+              <FaCar className="text-gray-600 mr-3" size={24} />
               <span className="text-lg">
                 <span className="font-semibold">Body:</span> {car.Body}
               </span>
