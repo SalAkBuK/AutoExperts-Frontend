@@ -23,6 +23,7 @@ const AddCarForm = () => {
     Condition: Yup.string().required('Condition is required'),
     EngineSize: Yup.string().required('Engine size is required'),
     Door: Yup.number().min(1, 'Door must be at least 1').required('Number of doors is required'),
+    Color: Yup.string().required('Color is required'),
     images: Yup.mixed().required('Images are required'),
     pdf: Yup.mixed().required('PDF is required')
   });
@@ -84,7 +85,9 @@ const AddCarForm = () => {
         FuelType: '',
         Condition: '',
         EngineSize: '',
+        Color: '',
         Door: '',
+        OwnerEmail: '',
         images: null,
         pdf: null
       }}
@@ -108,8 +111,10 @@ const AddCarForm = () => {
                  { label: 'Body', name: 'Body', type: 'text' },
                  { label: 'Fuel Type', name: 'FuelType', type: 'text' },
                  { label: 'Condition', name: 'Condition', type: 'text' },
+                 {label: 'Color', name: 'Color', type: 'text'},
                  { label: 'Engine Size', name: 'EngineSize', type: 'text' },
                  { label: 'Door', name: 'Door', type: 'number' },
+                 { label: 'Owner Email', name: 'OwnerEmail', type: 'text' },
                ].map((field) => (
                  <div key={field.name} className="flex flex-col">
                    <label className="text-gray-600 font-medium">{field.label}:</label>

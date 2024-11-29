@@ -58,6 +58,7 @@ function AuctionPlatform() {
   return (
     <div className="flex flex-col min-h-screen">
   <AuctionHeader />
+  <div className="relative -mt-20 bg-white rounded-tl-7xl rounded-tr-7xl py-12 px-4 sm:px-6 lg:px-8 shadow-lg mb-20">
   <main className="flex-grow">
     <div className="bg-gray-50 p-8 space-y-8">
     <h1
@@ -121,6 +122,7 @@ function AuctionPlatform() {
                   }`}
                 />
               </div>
+              <div className="border-t border-gray-00 mb-3"></div>
 
               {/* Car Details */}
               <div
@@ -132,7 +134,7 @@ function AuctionPlatform() {
                   className="text-lg font-semibold text-gray-800 truncate"
                   style={{ fontFamily: 'DM Sans', fontSize: '18px', fontWeight: 500 }}
                 >
-                  {car.carDetails}
+                  {car.title}
                 </h2>
                 <p
                   className="text-sm text-gray-500 truncate"
@@ -148,6 +150,7 @@ function AuctionPlatform() {
                   <FaTachometerAlt className="mr-2" />
                   Mileage: {car?.mileage?.toLocaleString()} miles
                 </div>
+                <div className="border-t border-gray-00 mb-3"></div>
 
                 {/* Auction Info */}
                 <div className="mt-4 text-gray-800 space-y-1">
@@ -159,11 +162,11 @@ function AuctionPlatform() {
                   </div>
                   <div className="flex items-center text-sm">
                     <FaTag className="mr-2 text-gray-600" />
-                    Starting Bid: ${car?.initialBid?.toLocaleString() || 'N/A'}
+                    Starting Bid: {car?.initialBid?.toLocaleString() || 'N/A'}
                   </div>
                   <div className="flex items-center text-sm">
                     <FaTag className="mr-2 text-gray-600" />
-                    Highest Bid: {car.highestBid ? `$${car.highestBid.bidAmount.toLocaleString()}` : 'No Bids Yet'}
+                    Highest Bid: {car.highestBid ? `${car.highestBid.bidAmount.toLocaleString()}` : 'No Bids Yet'}
                   </div>
                   <div className="flex items-center text-sm font-semibold text-red-600">
  
@@ -201,6 +204,8 @@ function AuctionPlatform() {
       </div>
     </div>
   </main>
+  
+  </div>
   <FooterOne />
 </div>
   );

@@ -6,22 +6,21 @@ import { FaBars } from 'react-icons/fa';
 
 const Navbar = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // Hook to navigate after logout
+  const navigate = useNavigate();
   const showAdminButton = location.pathname === '/auction-platform';
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Logout Function
+  
   const handleLogout = () => {
-    // Clear session storage and local storage
-    sessionStorage.removeItem('user');  // replace 'user' with your session storage key
-    localStorage.removeItem('user');    // replace 'user' with your local storage key
+    
+    localStorage.removeItem('token');
 
-    // Redirect to login or home page after logout
-    navigate('/'); // Or redirect to '/' (home page) depending on your app's flow
+    
+    navigate('/');
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 dark:bg-[#0C0C1D]">
+    <nav className="bg-white border-b border-gray-200 dark:bg-[#0C0C1D] pb-20">
       <div className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-40">
         
         {/* Logo */}
@@ -46,7 +45,7 @@ const Navbar = () => {
           <div className="flex space-x-4">
             {/* Dropdown Links positioned to the right */}
             {['For Buyers', 'For Sellers', 'Services', 'Company'].map((item) => (
-              <div key={item} className="relative group ">
+              <div key={item} className="relative group items-center">
                 <Link to="#" className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" style={{ fontFamily: 'Roboto', fontSize: '16px', fontWeight: 500 }}>
                   {item}
                   <img src={DownArrow} alt="DownArrow" className="ml-2 h-4 w-4" />

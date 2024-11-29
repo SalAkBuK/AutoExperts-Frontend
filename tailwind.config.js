@@ -4,6 +4,10 @@ export default {
 
   theme: {
     extend: {
+      colors: {
+        'custom-blue-bg': '#E9F2FF',
+        'custom-blue-text': '#405FF2',
+      },
 
       borderRadius: {
         '4xl': '2rem', // You can customize this value

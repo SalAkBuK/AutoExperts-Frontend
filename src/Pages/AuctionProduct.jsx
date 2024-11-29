@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import VehicleDetails from '../components/VehicleDetails';
-import BidInformation from '../components/BidInformation';
-import ImageGallery from '../components/ImageGallery';
+import {  FaGasPump } from 'react-icons/fa';
 
 import axios from 'axios';
 import io from 'socket.io-client';
 import { useParams, useLocation } from 'react-router-dom';
-import CarHeader from '../components/CarHeader';
+import AuctionHeader from '../components/AuctionHeader'
 import FooterOne from '../components/FooterOne';
 import { FaDoorOpen, FaHammer,FaDollarSign, FaCheckCircle, FaTimes, FaBook, FaCar,FaCogs, FaTachometerAlt,FaTag   } from 'react-icons/fa';
 import { FaFileAlt } from 'react-icons/fa';
-
+import AuctionTimer from '../components/AuctionTimer';
 const socket = io('http://localhost:5000', {
   transports: ['websocket'],
   withCredentials: true
@@ -97,7 +95,7 @@ function AuctionProduct() {
   return (
 
     <div>
-    <CarHeader />
+    <AuctionHeader />
     
     <div className="relative -mt-20 bg-white rounded-tl-7xl rounded-tr-7xl py-12 px-4 sm:px-6 lg:px-8 shadow-lg mb-20">
       <div className="container mx-auto p-4 max-w-6xl bg-white rounded-lg shadow-lg">
@@ -110,11 +108,15 @@ function AuctionProduct() {
           </div>
           
           <div className="text-left sm:text-right mt-4 sm:mt-0">
-            <p className="text-xl font-semibold text-blue-600">{`Current Highest Bid: $${highestBidAmount}`}</p>
+            <p className="text-xl font-semibold text-custom-blue-text">{`Current Highest Bid: PKR: ${highestBidAmount}`}
+            </p>
             <div className="flex items-center justify-start sm:col-span-2">
               <span className="px-4 py-2 rounded-full text-red-600 bg-red-200 bg-opacity-30 text-base font-semibold flex items-center">
-                <FaTimes className="mr-2 text-red-500" size={20} />
-                Auction Ends: {new Date(car.auctionEndTime).toLocaleString()}
+              {new Date() < new Date(car.auctionEndTime) ? (
+    <AuctionTimer auctionEndTime={car.auctionEndTime} />
+  ) : (
+    'Auction Ended'
+  )}
               </span>
             </div>
           </div>
@@ -122,10 +124,25 @@ function AuctionProduct() {
         <div className="border-t border-gray-300 my-8"></div>
 
         <div className="flex flex-wrap gap-2 mb-6">
-  <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">{car.model}</span>
-  <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">{car.mileage}{' '}miles</span>
-  <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">Automatic</span>
-  <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">{car.FuelType}</span>
+        <span className="px-3 py-1 bg-custom-blue-bg text-custom-blue-text rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-[15px] flex items-center space-x-2">
+  <FaCar className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-custom-blue-text" />
+  <span>{car.model}</span>
+</span>
+
+<span className="px-3 py-1 bg-custom-blue-bg text-custom-blue-text rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-[15px] flex items-center space-x-2">
+  <FaCar className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-custom-blue-text" />
+  <span>{car.mileage}{' '}miles</span>
+</span>
+
+<span className="px-3 py-1 bg-custom-blue-bg text-custom-blue-text rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-[15px] flex items-center space-x-2">
+  <FaCogs className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-custom-blue-text" />
+  <span>Automatic</span>
+</span>
+
+<span className="px-3 py-1 bg-custom-blue-bg text-custom-blue-text rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-[15px] flex items-center space-x-2">
+  <FaGasPump className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-custom-blue-text" />
+  <span>{car.FuelType}</span>
+</span>
 </div>
 
 {/* Image Gallery */} <div className="flex gap-4 mb-8">
@@ -136,7 +153,7 @@ function AuctionProduct() {
                 className="w-full h-full object-cover rounded-lg cursor-pointer"
                 onClick={() => openModal(car.images[0])}
               />
-             
+             <span className="absolute top-2 left-2 bg-green-500 text-white text-sm px-2 py-1 rounded">{car.Color}</span>
             </div>
             <div className="grid grid-cols-2 gap-2 w-1/2">
               {car.images.slice(1).map((image, index) => (
@@ -184,7 +201,7 @@ function AuctionProduct() {
   
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8 text-gray-800">
             <p className="flex items-start">
-              <FaCar className="text-gray-600 mr-3" size={24} />
+              <FaCar className="text-gray-600 mr-3" size={50} />
               <span className="text-lg">
                 <span className="font-semibold">Body:</span> {car.Body}
               </span>
@@ -208,7 +225,7 @@ function AuctionProduct() {
               </span>
             </p>
             <p className="flex items-start">
-              <FaCogs className="text-gray-600 mr-3" size={70} />
+              <FaCogs className="text-gray-600 mr-3" size={24} />
               <span className="text-lg">
                 <span className="font-semibold">Selected Features:</span> {car.SelectedFeatures}
               </span>

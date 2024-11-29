@@ -34,12 +34,17 @@ import Member from './Pages/Member'
 import MemberLogin from './Pages/MemberLogin';
 import MemberSignin from './Pages/MemberSignin';
 import ScrollToTop from './components/ScrollToTop';
+import UsedProducts from './Pages/UsedProducts'
 import Logout from './components/Logout';
 import AuctionProduct from './Pages/AuctionProduct';
 import AuctionPlatform from './Pages/AuctionPlatform';
 import AddCarForm from './Pages/AddCarForm';
 import AuctionList from './Pages/AuctionList';
 import CarDetail from './Pages/CarDetail';
+
+import MemberLayout from './layout/Memberlayout';
+import MemberPlatform from './Pages/Auction/MemberPlatform';
+
 function App() {
 
 
@@ -58,12 +63,19 @@ function App() {
         <Route path="/add-car-form" element={<AddCarForm />} />
         <Route path="/auction-car-list" element={<AuctionList />} />
         <Route path="/collection" element={<ProductList />} />
+        <Route path="/product/:productId" element={<UsedProducts/>} />
         <Route path="/predictor" element={<Predictor />} />
         <Route path="/member" element={<Member />} />
         <Route path="/member-login" element={<MemberLogin />} />
         <Route path="/member-signin" element={<MemberSignin />} />
 
         <Route path = "/auction-platform" element={<AuctionPlatform />}/>
+        <Route path = "/member-platform"  element={
+          <MemberLayout>
+            <MemberPlatform />
+          </MemberLayout>
+        }/>
+
         <Route path="/car/:carId" element={<AuctionProduct/>} />
         <Route path="/car-details" element={<CarDetail/>} />
         <Route path = "/logout" element={<Logout />}/>

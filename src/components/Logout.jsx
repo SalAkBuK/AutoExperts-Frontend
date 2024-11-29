@@ -3,11 +3,9 @@ import { useNavigate } from 'react-router-dom';
 function Logout() {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // Clear JWT token from local storage
+  const handleLogout = () => {  
     localStorage.removeItem('token');
-    // Redirect to login page
-    navigate('/admin');
+    navigate('/');
   };
 
   return (

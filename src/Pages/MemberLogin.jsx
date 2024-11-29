@@ -12,7 +12,7 @@ import lockIcon from '../assets/AdminLogin/Lock.svg';
 // npm install formik yup axios 
 
 function MemberLogin() {
-
+ 
   const navigate = useNavigate();
 
   const handleLogin = async (values) => {
@@ -36,6 +36,7 @@ function MemberLogin() {
 
       // Redirect to DisplayAllCars with the memberId
       navigate('/auction-platform', { state: { memberId } });
+      //navigate('/member-platform', { state: { memberId } });
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
       // Handle login error (show error message to user, etc.)
