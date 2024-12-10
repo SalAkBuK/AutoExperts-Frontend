@@ -37,7 +37,7 @@ function AdminDashboard() {
           to="/booking-details"
           className="bg-green-500 hover:bg-green-600 text-center text-white py-3 px-6 rounded-lg shadow-md transition duration-300 inline-block"
         >
-          Slot Booking Details
+          Inspection Booking Details
         </Link>
         <Link
           to="/add-car-form"

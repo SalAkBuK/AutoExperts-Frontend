@@ -135,7 +135,7 @@ const UserForm = () => {
     <MainHeader/>
     <div className="flex items-center justify-center min-h-screen bg-gray-100  pt-20  ">
     <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
-      <h1 className="text-3xl font-bold text-center ">SLOT BOOKING</h1>
+      <h1 className="text-3xl font-bold text-center pb-10 ">INSPECTION BOOKING</h1>
       <form onSubmit={formik.handleSubmit} className="space-y-4 ">
         {/* Row 1 */}
         
