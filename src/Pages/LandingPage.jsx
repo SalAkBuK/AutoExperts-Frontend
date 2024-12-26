@@ -7,6 +7,7 @@ import ReadyToSignUp from "../components/ReadyToSignUp";
 import AboutUs from '../components/AboutUs';
 import CarAuction from "../components/CarAuction";
 
+import MemberLayout from "../layout/MemberLayout";
 function landingPage() {
   return (
     <>
@@ -18,6 +19,7 @@ function landingPage() {
       
       <Reviews_2/>
       <FooterOne/>
+       <MemberLayout/>
      
     </>
   );
