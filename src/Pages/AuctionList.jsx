@@ -8,7 +8,7 @@ const AuctionList = () => {
   // Fetch all cars with populated references (highestBid, highestBidder, and topBids)
   const fetchCars = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/cars');
+      const response = await axios.get('http://167.99.228.40:5000/cars');
       setCars(response.data); // Set fetched cars in state
     } catch (error) {
       console.error('Error fetching cars:', error);

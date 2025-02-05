@@ -8,7 +8,9 @@ import logo from '../assets/AdminLogin/Icon.png';
 function MemberSignin() {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
-
+ 
+  // Verify Email Function
+  
   // useFormik hook
   const formik = useFormik({
     initialValues: {
@@ -50,22 +52,29 @@ function MemberSignin() {
       
       try {
         console.log("FORM DATA: ", values);
-        const res = await axios.post('http://localhost:5000/api/auth/register', values);
-        const { token } = res.data;
+    
+        // Send registration data to your server
+        const res = await axios.post('http://167.99.228.40:5000/api/auth/register', values);
+        const { token, sessionUrl } = res.data;
         console.log(res);
-
+    
         // Decode the token to get the member ID
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const memberId = decodedToken.id;
-
-        // Store the token
+    
+        // Store the token in localStorage
         localStorage.setItem('token', token);
-
-        // Redirect to DisplayAllCars with the memberId
-        navigate('/member-login', { state: { memberId } });
-      } catch (err) {
+    
+        // Step 1: Close the sign-up page (optional)
+        window.close();  // Only works if the page was opened via JavaScript (e.g., window.open)
+    
+        // Step 2: Open the Stripe checkout page in a new tab
+        window.open(sessionUrl, "_blank");
+    
+    } catch (err) {
         setError(err.response?.data?.message || 'Registration failed. Please try again.');
-      }
+    }
+    
     }
   });
 
@@ -73,8 +82,10 @@ function MemberSignin() {
     <div className="flex dark:bg-[#0C0C1D]">
       <div className="hidden lg:flex w-1/2 dark:bg-[#0C0C1D] items-center justify-center">
         <div className="text-center">
-          <img src={logo} alt="AutoExperts Auctions" className="w-3/3 h-auto mb-20" />
-          <div className="flex justify-between mt-8 text-white text-lg">
+        <Link to="/" className="block">
+  <img src={logo} alt="AutoExperts Auctions" className="w-3/3 h-auto mb-20" />
+</Link>
+            <div className="flex justify-between mt-8 text-white text-lg">
             <Link to="/" className="mx-4 hover:underline">Terms of Use</Link>
             <Link to="/" className="mx-4 hover:underline">Privacy</Link>
             <Link to="/" className="mx-4 hover:underline">Help</Link>
@@ -104,20 +115,31 @@ function MemberSignin() {
             </div>
 
             <div className="form-group">
-              <label className="block text-gray-700"><strong>Email Address</strong></label>
-              <div className="flex items-center border-b-2 border-gray-300 py-2">
-                <input
-                  type="email"
-                  name="email"
-                  className="form-control w-full border-none focus:outline-none focus:ring-0"
-                  placeholder="Enter Email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </div>
-              {formik.touched.email && formik.errors.email && <div className="text-red-600 text-md mt-1">{formik.errors.email}</div>}
-            </div>
+  <label className="block text-gray-700"><strong>Email Address</strong></label>
+  <div className="flex items-center border-b-2 border-gray-300 py-2">
+  <input
+            type="email"
+            name="email"
+            className="form-control w-full border-none focus:outline-none focus:ring-0"
+            placeholder="Enter Email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={async (e) => {
+              formik.handleBlur(e); // Trigger formik's built-in blur handling
+             
+            }}
+          />
+        </div>
+
+        {/* Email Validation Error from Formik */}
+        {formik.touched.email && formik.errors.email && (
+          <div className="text-red-600 text-md mt-1">{formik.errors.email}</div>
+        )}
+
+        {/* Custom Email Error for Invalid Email */}
+        {error && <div className="text-red-600 text-md mt-1">{error}</div>}
+</div>
+
 
             <div className="form-group">
               <label className="block text-gray-700"><strong>Password</strong></label>
@@ -242,7 +264,7 @@ function MemberSignin() {
 
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
-              Already have an account? <Link to="/login" className="text-blue-600">Login</Link>
+              Already have an account? <Link to="/member-login" className="text-blue-600">Login</Link>
             </p>
           </div>
         </div>

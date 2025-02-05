@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import SideBar from '../components/Admin Comp/Sidebar.jsx';
 
 const Form = () => {
 
@@ -67,7 +68,7 @@ useEffect(() => {
         return;
       }
       
-      await axios.post('http://localhost:5000/api/products', formDataObj, {
+      await axios.post('http://167.99.228.40:5000/api/products', formDataObj, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`
@@ -91,6 +92,14 @@ useEffect(() => {
   };
 
   return (
+
+    <div>
+   <section className="w-[10%] sm:w-[15%]">
+    <SideBar />
+    
+     </section>
+     <section className="flex flex-col w-[90%] sm:w-[85%] overflow-auto">
+
     <div className="bg-gray-100 min-h-screen flex flex-col justify-center items-center py-8">
     <h2 className="text-3xl font-bold text-gray-800 mb-4">Add Product</h2>
     <form className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
@@ -192,6 +201,8 @@ useEffect(() => {
         </button>
       </div>
     </form>
+  </div>
+  </section>
   </div>
 );  
 };

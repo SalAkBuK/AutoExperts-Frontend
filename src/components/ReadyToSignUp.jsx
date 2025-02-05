@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ReadyToSignUp = () => {
+const ReadyToSignUp = ({ scrollToServices }) => {
   return (
     <section className="bg-[#0A0D1C] text-white py-10 px-5 md:px-20">
       <h2 className="text-6xl font-bold mb-8 text-center md:text-left">
@@ -38,7 +38,10 @@ const ReadyToSignUp = () => {
 
 
       <div className="mt-10 flex justify-center">
-        <button className="bg-orange-500 text-white px-6 py-3 rounded-1xl w-full text-3xl font-bold">
+      <button
+          className="bg-orange-500 text-white px-6 py-3 rounded-1xl w-full text-3xl font-bold"
+          onClick={scrollToServices} // Trigger the scroll function
+        >
           Our Services
         </button>
       </div>

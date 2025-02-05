@@ -17,7 +17,7 @@ function Login() {
 
   const handleLogin = async (values) => {
     try {
-      const response = await axios.post(`http://localhost:5000/admin/login`, {
+      const response = await axios.post(`http://167.99.228.40:5000/admin/login`, {
         Adminid: values.Adminid,
         email: values.email,
         password: values.password,

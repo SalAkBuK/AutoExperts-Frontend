@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 dark:bg-[#0C0C1D] pb-20">
+    <nav className="bg-white border-b border-gray-200 dark:bg-[#0C0C1D] -mr-10 pb-10">
       <div className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-40">
         
         {/* Logo */}

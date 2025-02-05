@@ -44,6 +44,9 @@ import CarDetail from './Pages/CarDetail';
 
 import MemberLayout from './layout/Memberlayout';
 import MemberPlatform from './Pages/Auction/MemberPlatform';
+import SuccessForm from './Pages/Forms/success';
+import FailureForm from './Pages/Forms/fail';
+
 
 function App() {
 
@@ -68,6 +71,9 @@ function App() {
         <Route path="/member" element={<Member />} />
         <Route path="/member-login" element={<MemberLogin />} />
         <Route path="/member-signin" element={<MemberSignin />} />
+        
+        <Route path="/forms/failure" element={<FailureForm />} />
+        <Route path="/forms/success" element={<SuccessForm />} />
 
         <Route path = "/auction-platform" element={<AuctionPlatform />}/>
         <Route path = "/member-platform"  element={

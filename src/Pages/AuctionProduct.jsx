@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {  FaGasPump } from 'react-icons/fa';
+import MemberLayout from '../layout/MemberLayout';
 
 import axios from 'axios';
 import io from 'socket.io-client';
@@ -9,7 +10,11 @@ import FooterOne from '../components/FooterOne';
 import { FaDoorOpen, FaHammer,FaDollarSign, FaCheckCircle, FaTimes, FaBook, FaCar,FaCogs, FaTachometerAlt,FaTag   } from 'react-icons/fa';
 import { FaFileAlt } from 'react-icons/fa';
 import AuctionTimer from '../components/AuctionTimer';
-const socket = io('http://localhost:5000', {
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
+const socket = io('http://167.99.228.40:5000', {
   transports: ['websocket'],
   withCredentials: true
 });
@@ -22,6 +27,8 @@ function AuctionProduct() {
   const { memberId } = location.state || {};  // Retrieve memberId from state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isConfirmBidModalOpen, setIsConfirmBidModalOpen] = useState(false);
 
   useEffect(() => {
     if (!carId) {
@@ -35,7 +42,7 @@ function AuctionProduct() {
 
     const fetchCar = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/cars/${carId}`);
+        const response = await axios.get(`http://167.99.228.40:5000/api/cars/${carId}`);
         console.log("RESPONSE: ", response)
         setCar(response.data);
       } catch (error) {
@@ -70,17 +77,32 @@ function AuctionProduct() {
     const parsedBidAmount = parseFloat(bidAmount);
 
     if (!bidAmount || isNaN(parsedBidAmount) || parsedBidAmount <= (car?.highestBid?.bidAmount || 0)) {
-      alert('Bid amount must be higher than the current highest bid.');
+      toast.error("Bid amount must be higher than the current highest bid.");
       return;
     }
 
+    setIsLoading(true);
+
     try {
-      const response = await axios.post('http://localhost:5000/api/bids', { carId, bidderId: memberId, bidAmount: parsedBidAmount });
-      setBidAmount('');  // Clear bid input
+      await axios.post("http://167.99.228.40:5000/api/bids", {
+        carId,
+        bidderId: memberId,
+        bidAmount: parsedBidAmount,
+      });
+
+      setBidAmount(""); // Clear bid input
+      toast.success("Bid placed successfully!");
     } catch (error) {
-      console.error('Error placing bid:', error.response ? error.response.data : error.message);
+      toast.error("Error placing bid. Please try again.");
+      console.error("Error placing bid:", error.response ? error.response.data : error.message);
+    } finally {
+      setIsLoading(false);
+      setIsConfirmBidModalOpen(false);
     }
   };
+
+
+
 
   if (!car) return <div>Loading...</div>;
 
@@ -93,11 +115,11 @@ function AuctionProduct() {
   const auctionEnded = currentTime >= auctionEndTime;
 
   return (
-
+    <MemberLayout> 
     <div>
     <AuctionHeader />
     
-    <div className="relative -mt-20 bg-white rounded-tl-7xl rounded-tr-7xl py-12 px-4 sm:px-6 lg:px-8 shadow-lg mb-20">
+    <div className="relative -mt-7 bg-white rounded-tl-7xl rounded-tr-7xl rounded-bl-7xl rounded-br-7xl py-12 px-4 sm:px-6 lg:px-8 shadow-lg -mb-6 ">
       <div className="container mx-auto p-4 max-w-6xl bg-white rounded-lg shadow-lg">
         
         {/* Car Title and Auction Info */}
@@ -145,55 +167,90 @@ function AuctionProduct() {
 </span>
 </div>
 
-{/* Image Gallery */} <div className="flex gap-4 mb-8">
-            <div className="relative w-2/3">
-              <img
-                src={car.images[0]}
-                alt="Main car"
-                className="w-full h-full object-cover rounded-lg cursor-pointer"
-                onClick={() => openModal(car.images[0])}
-              />
-             <span className="absolute top-2 left-2 bg-green-500 text-white text-sm px-2 py-1 rounded">{car.Color}</span>
-            </div>
-            <div className="grid grid-cols-2 gap-2 w-1/2">
-              {car.images.slice(1).map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={`Thumb ${index + 1}`}
-                  className="object-cover rounded-lg cursor-pointer"
-                  onClick={() => openModal(image)}
-                />
-              ))}
-            </div>
-          </div>
+{/* Image Gallery */} 
+<div className="flex gap-6 mb-8">
+  {/* Main Image */}
+  <div className="relative w-2/3">
+    <img
+      src={car.images[0]}
+      alt="Main car"
+      className="w-full h-[400px] object-cover rounded-xl shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105"
+      onClick={() => openModal(car.images[0])}
+    />
+    <span className="absolute top-3 left-3 bg-green-600 text-white text-sm px-3 py-1 rounded-lg shadow-md">
+      {car.Color}
+    </span>
+  </div>
+
+  {/* Thumbnail Images */}
+  <div className="grid grid-cols-2 gap-4 w-1/3">
+    {car.images.slice(1).map((image, index) => (
+      <img
+        key={index}
+        src={image}
+        alt={`Thumbnail ${index + 1}`}
+        className="w-full h-[190px] object-cover rounded-xl shadow-md cursor-pointer transition-transform duration-300 hover:scale-105"
+        onClick={() => openModal(image)}
+      />
+    ))}
+  </div>
+</div>
+
 
         {/* Place Bid Section */}
         <div className="mt-6 mb-4 flex flex-col gap-3">
-          <h2 className="font-semibold text-xl">Place a Bid</h2>
-          {!auctionEnded ? (
-            <>
-              <input
-                type="number"
-                value={bidAmount}
-                onChange={(e) => setBidAmount(e.target.value)}
-                placeholder="Enter your bid"
-                className="p-3 border border-gray-300 rounded-md text-lg"
-              />
+      <ToastContainer />
+
+      <h2 className="font-semibold text-xl">Place a Bid</h2>
+
+      {!auctionEnded ? (
+        <>
+          <input
+            type="number"
+            value={bidAmount}
+            onChange={(e) => setBidAmount(e.target.value)}
+            placeholder="Enter your bid"
+            className="p-3 border border-gray-300 rounded-md text-lg"
+          />
+          <button
+            onClick={() => setIsConfirmBidModalOpen(true)}
+            className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 transition duration-200 flex items-center justify-center text-lg"
+          >
+            <FaCheckCircle className="mr-2" />
+            Place Bid
+          </button>
+        </>
+      ) : (
+        <h2 className="px-4 py-1 rounded-full text-red-600 bg-red-200 bg-opacity-30 font-semibold text-lg text-center">
+          Auction Ended
+        </h2>
+      )}
+
+      {/* Confirmation Modal */}
+      {isConfirmBidModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+            <h3 className="text-lg font-semibold">Confirm Your Bid</h3>
+            <p className="text-gray-600 mt-2">Are you sure you want to place a bid of PKR {bidAmount}?</p>
+            <div className="mt-4 flex justify-center gap-4">
+              <button
+                onClick={() => setIsConfirmBidModalOpen(false)}
+                className="bg-gray-300 px-4 py-2 rounded-md"
+              >
+                Cancel
+              </button>
               <button
                 onClick={handleBid}
-                className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 transition duration-200 flex items-center justify-center text-lg"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center justify-center"
+                disabled={isLoading}
               >
-                <FaCheckCircle className="mr-2" />
-                Place Bid
+                {isLoading ? "Placing..." : "Confirm"}
               </button>
-            </>
-          ) : (
-            <h2 className="px-4 py-1 rounded-full text-red-600 bg-red-200 bg-opacity-30 font-semibold text-lg text-center">
-              Auction Ended
-            </h2>
-          )}
+            </div>
+          </div>
         </div>
+      )}
+    </div>
         <div className="border-t border-gray-300 my-8"></div>
         {/* Car Details */}
         <div>
@@ -288,7 +345,7 @@ function AuctionProduct() {
     </div>
     <FooterOne/>
   </div>
-  
+  </MemberLayout>
   
   
   

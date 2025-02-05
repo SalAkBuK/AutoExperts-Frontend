@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SlotBookingSVG from '../assets/Assets/SlotBooking.svg';
 import UsedCarsSVG from '../assets/Assets/UsedCars.svg';
@@ -36,7 +36,7 @@ const services = [
   }
 ];
 
-const OurServices = () => {
+const OurServices = forwardRef((props, ref) => {
   const navigate = useNavigate();
 
   const handleCardClick = (path) => {
@@ -44,7 +44,7 @@ const OurServices = () => {
   };
 
   return (
-    <section className="bg-white py-10 px-9 md:px-20 rounded-t-6xl py-12 px-4 sm:px-6 lg:px-8 shadow-lg relative -mt-15">
+    <section ref={ref} className="bg-white -mt-20 py-10 px-9 md:px-20 rounded-t-7xl py-12 px-4 sm:px-6 lg:px-8 shadow-lg relative -mt-15">
       <h2 className="text-6xl font-bold text-center text-black mb-10">
         <span className="text-orange-500 mr-2 text-6xl">/</span>OUR SERVICES
       </h2>
@@ -65,6 +65,9 @@ const OurServices = () => {
       </div>
     </section>
   );
-};
+});
+
+OurServices.displayName = 'OurServices';
+
 
 export default OurServices;

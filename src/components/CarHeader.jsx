@@ -8,12 +8,12 @@ const Navbar = () => {
   const showAdminButton = location.pathname === '/';
 
   return (
-    <nav className="pb-22 bg-white border-gray-200 dark:bg-[#0C0C1D]">
+    <nav className="pb-10 bg-white border-gray-200 dark:bg-[#0C0C1D]">
       <div className="pb-20 max-w-10xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <div className="flex lg:flex-1">
           <Link to="/" className="flex-shrink-0">
             
-            <img src={logo} alt="Logo" style={{ height: '100px', width: '250px' }} />
+            <img src={logo} alt="Logo" className="h-16 sm:h-20 md:h-24 w-auto max-w-xs object-contain" />
           </Link>
         </div>
 

@@ -17,7 +17,7 @@ function MemberLogin() {
 
   const handleLogin = async (values) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', {
+      const res = await axios.post('http://167.99.228.40:5000/api/auth/login', {
         email: values.email,
         password: values.password,
       });
@@ -57,7 +57,10 @@ function MemberLogin() {
       </div>
     </div>
 
-    <div className="flex w-full lg:w-1/3 justify-center items-center bg-white mx-10 lg:mx-20 mt-10 mb-10 lg:my-20  shadow-lg rounded-r-3xl">
+    <div className="flex w-full lg:w-1/3 justify-center items-center bg-white mx-10 lg:mx-20 mt-10 mb-10 lg:my-20 shadow-lg rounded-full lg:rounded-none lg:rounded-r-3xl">
+
+
+
       <div className="w-full max-w-md p-8 sm:p-6 md:py-4">
         <h2 className="text-2xl font-bold text-center mb-6">Member Login</h2>
     <Formik

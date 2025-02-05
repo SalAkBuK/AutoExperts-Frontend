@@ -25,7 +25,7 @@ function MemberPlatform() {
           return;
         }
         setLoading(true);
-        const response = await axios.get("http://localhost:5000/api/cars", {
+        const response = await axios.get("http://167.99.228.40:5000/api/cars", {
           Authorization: `Bearer ${token}`,
         });
         console.log("response:", response);

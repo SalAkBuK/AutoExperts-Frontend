@@ -1,29 +1,15 @@
 // src/CarAuction.js
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import WhiteCar from '../assets/LandingPage/WhiteCar.svg';
 import BlueCar from '../assets/LandingPage/BlueCar.svg';
 import BlackCar from '../assets/LandingPage/Blackcar.svg';
-import './CarAuction.css'
+import './CarAuction.css';
+
 const cars = [
-  {
-    id: 1,
-    image: WhiteCar, // Use the imported image reference
-    views: 377,
-    bids: 53,
-  },
-  {
-    id: 2,
-    image: BlueCar, // Use the imported image reference
-    views: 412,
-    bids: 75,
-  },
-  {
-    id: 3,
-    image: BlackCar, // Use the imported image reference
-    views: 500,
-    bids: 90,
-  },
-  // Add more car objects as needed
+  { id: 1, image: WhiteCar, views: 377, bids: 53 },
+  { id: 2, image: BlueCar, views: 412, bids: 75 },
+  { id: 3, image: BlackCar, views: 500, bids: 90 },
 ];
 
 const CarAuction = () => {
@@ -40,46 +26,38 @@ const CarAuction = () => {
         return prevTimer - 1;
       });
     }, 1000);
-    
 
-    return () => {
-      clearInterval(countdown);
-     
-    };
+    return () => clearInterval(countdown);
   }, []);
 
   return (
-    <div className="bg-[#0A0D1C] text-white pb-4 flex flex-col lg:flex-row items-start justify-between w-full settings">
-    <div className="flex flex-col items-start text-settings mb-4 lg:mb-0 lg:mr-8">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-orange-500">
-        THE LEADING ONLINE
-      </h1>
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-orange-500">
-        CAR AUCTION
-      </h1>
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-orange-500">
-        PLATFORM <span className="text-white">IN PAKISTAN</span>
-      </h1>
-    </div>
-  
-    <div className="bg-white text-black rounded-lg p-4 shadow-md w-full sm:w-[300px] auction">
-      <div className="flex justify-between mb-4 text-sm">
-        <span>{cars[currentCar].bids} Bids</span>
-        <span>{cars[currentCar].views} Views</span>
+    <div className="bg-[#0A0D1C] text-white py-10 flex flex-col lg:flex-row items-center justify-center w-full px-4 sm:px-8 md:px-12 mb-16 -mt-20">
+      <div className="flex flex-col items-center lg:items-center text-center lg:text-center mb-6 lg:mb-0 lg:mr-8">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500">THE LEADING ONLINE</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500">CAR AUCTION</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-orange-500">PLATFORM <span className="text-white">IN PAKISTAN</span></h1>
       </div>
-      <img src={cars[currentCar].image} alt="Car" className="w-full h-[150px] object-cover mb-2" />
-      <div className="flex justify-between items-center">
-        {timer === 0 ? (
-          <button className="bg-orange-500 text-white px-4 py-2 rounded-lg font-semibold">Sold</button>
-        ) : (
-          <button className="bg-orange-500 text-white px-5 py-1 rounded-lg font-semibold">Bid</button>
-        )}
-        <span className="text-xl font-bold">{timer}</span>
-      </div>
-    </div>
-  </div>
-  
 
+      <div className="bg-white text-black rounded-lg p-6 shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-sm 
+    mx-auto lg:ml-60">
+
+        <div className="flex justify-between mb-4 text-sm">
+          <span>{cars[currentCar].bids} Bids</span>
+          <span>{cars[currentCar].views} Views</span>
+        </div>
+        <img src={cars[currentCar].image} alt="Car" className="w-full h-[180px] object-cover mb-3 rounded-md" />
+        <div className="flex justify-between items-center">
+          {timer === 0 ? (
+            <button className="bg-orange-500 text-white px-4 py-2 rounded-lg font-semibold w-full">Sold</button>
+          ) : (
+            <Link to="/member">
+              <button className="bg-orange-500 text-white px-5 py-2 rounded-lg font-semibold">Bid</button>
+            </Link>
+          )}
+          <span className="text-xl font-bold">{timer}</span>
+        </div>
+      </div>
+    </div>
   );
 };
 

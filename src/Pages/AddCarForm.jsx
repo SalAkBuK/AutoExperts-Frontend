@@ -51,7 +51,7 @@ const AddCarForm = () => {
         return;
       }
         console.log("DATA:", data)
-      const response = await axios.post('http://localhost:5000/api/cars', data, {
+      const response = await axios.post('http://167.99.228.40:5000/api/cars', data, {
         headers: { 
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${token}` }

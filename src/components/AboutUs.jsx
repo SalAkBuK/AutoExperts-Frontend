@@ -1,9 +1,10 @@
 // src/AboutUs.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AboutUs = () => {
   return (
-    <div className=" relative -mb-40 bg-white p-8 md:p-12 lg:p-16 text-center rounded-b-6xl  max-w-8xl mx-auto ">
+    <div className=" relative -mb-40 bg-white p-8 md:p-12 lg:p-16 text-center rounded-b-7xl  max-w-8xl mx-auto ">
       <h2 className="text-6xl font-bold mb-4 flex justify-center items-center mb-20">
         <span className="text-orange-500 text-6xl mr-2">/</span>
         About Us
@@ -26,9 +27,12 @@ const AboutUs = () => {
       <p className="text-red-600 font-semibold text-lg mb-6">
         Register today to start bidding and winning used car auctions.
       </p>
-      <button className="bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition duration-300">
-        Register Today
-      </button>
+      <Link
+  to="/member-signin" // Set the desired link to the register page
+  className="bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition duration-300"
+>
+  Register Today
+</Link>
       
     </div>
   );

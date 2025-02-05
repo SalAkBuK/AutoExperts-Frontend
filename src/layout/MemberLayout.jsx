@@ -1,72 +1,103 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { TiHome, TiChartBar, TiUser } from 'react-icons/ti';
-import AuctionHeader from '../components/AuctionHeader';
-import FooterOne from '../components/FooterOne';
+import { FiMenu, FiChevronLeft } from 'react-icons/fi';
 
 const MemberLayout = ({ children }) => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(window.innerWidth > 768);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
+    setIsSidebarExpanded((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setIsSidebarExpanded(false);
+      } else {
+        setIsSidebarExpanded(true);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Run on mount to check initial size
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const goBackToPreviousPage = () => {
+    if (location.pathname !== '/dashboard') {
+      navigate(-1);
+    }
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex bg-indigo-900 h-screen">
       {/* Sidebar */}
-      <div
-        className={`fixed lg:relative z-50 transition-transform transform bg-gray-800 text-gray-100 w-64 min-h-screen ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        }`}
+      <aside
+        className={`fixed top-0 left-0 h-full bg-gray-800 text-white transition-all duration-300 ${
+          isSidebarExpanded ? 'w-64' : 'w-20'
+        } flex flex-col`}
       >
-        <div className="flex items-center justify-center py-4 bg-gray-900">
-          <h1 className="text-xl font-bold">Member Panel</h1>
+        {/* Header */}
+        <div className="py-4 px-6 bg-gray-900 flex items-center justify-between">
+          {isSidebarExpanded && <h1 className="text-lg font-bold">Member Panel</h1>}
+          <button
+            className="text-white text-xl focus:outline-none"
+            onClick={toggleSidebar}
+          >
+            {isSidebarExpanded ? <FiChevronLeft /> : <FiMenu />}
+          </button>
         </div>
-        <nav className="mt-4">
-          <Link
-            to="/dashboard"
-            className="flex items-center px-6 py-3 hover:bg-gray-700 transition"
-          >
-            <TiHome className="mr-3 text-xl" />
-            Dashboard
-          </Link>
-          <Link
-            to="/profile"
-            className="flex items-center px-6 py-3 hover:bg-gray-700 transition"
-          >
-            <TiUser className="mr-3 text-xl" />
-            Profile
-          </Link>
-          <Link
-            to="/stats"
-            className="flex items-center px-6 py-3 hover:bg-gray-700 transition"
-          >
-            <TiChartBar className="mr-3 text-xl" />
-            Stats
-          </Link>
+        {/* Navigation */}
+        <nav className="flex-grow mt-6 overflow-y-auto">
+          <ul className="space-y-1">
+            <li>
+              <button
+                onClick={goBackToPreviousPage}
+                className="flex items-center gap-4 px-6 py-3 hover:bg-gray-700 transition-colors w-full text-left"
+                disabled={location.pathname === '/dashboard'}
+              >
+                <TiHome className="text-xl" />
+                {isSidebarExpanded && <span>Dashboard</span>}
+              </button>
+            </li>
+            <li>
+              <Link
+                to="/profile"
+                className="flex items-center gap-4 px-6 py-3 hover:bg-gray-700 transition-colors"
+              >
+                <TiUser className="text-xl" />
+                {isSidebarExpanded && <span>Profile</span>}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/stats"
+                className="flex items-center gap-4 px-6 py-3 hover:bg-gray-700 transition-colors"
+              >
+                <TiChartBar className="text-xl" />
+                {isSidebarExpanded && <span>Stats</span>}
+              </Link>
+            </li>
+          </ul>
         </nav>
-      </div>
+        {/* Footer */}
+        <div className="py-4 px-6 bg-gray-900 text-sm text-center">
+          {isSidebarExpanded ? '© 2024 Member Panel' : '© 2024'}
+        </div>
+      </aside>
 
       {/* Main Content Area */}
-      <div className="flex flex-col flex-grow lg:ml-64">
-        {/* Header */}
-        <AuctionHeader />
-
-        {/* Content */}
-        <div className="flex-grow bg-white py-12 px-0 sm:px-0 lg:px-0">
-          <button
-            onClick={toggleSidebar}
-            className="lg:hidden absolute top-4 left-4 bg-gray-800 text-white p-2 rounded-md focus:outline-none"
-          >
-            <span className="sr-only">Open Sidebar</span>
-            <TiHome size={24} />
-          </button>
-          <main className="flex-grow">{children}</main>
-        </div>
-
-        {/* Footer */}
-        <FooterOne />
-      </div>
+      <main
+        className={`transition-all duration-300 ${
+          isSidebarExpanded ? 'ml-64' : 'ml-20'
+        } flex-grow bg-white overflow-y-auto h-full`}
+      >
+        <div className="min-h-screen">{children}</div>
+      </main>
     </div>
   );
 };

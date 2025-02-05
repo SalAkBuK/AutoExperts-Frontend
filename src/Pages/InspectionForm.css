@@ -1,0 +1,5 @@
+.custom-select .time-slot__control:focus {
+    box-shadow: none; /* Remove the blue glow */
+    border-color: transparent; /* Remove the default blue border */
+    background-color: transparent; /* Optional: Remove background color */
+  }
