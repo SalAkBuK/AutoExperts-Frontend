@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {  FaGasPump } from 'react-icons/fa';
 import MemberLayout from '../layout/MemberLayout';
-
+import Chatbot from '../components/ChatBot';
 import axios from 'axios';
 import io from 'socket.io-client';
 import { useParams, useLocation } from 'react-router-dom';
@@ -13,6 +13,7 @@ import AuctionTimer from '../components/AuctionTimer';
 import { ToastContainer, toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import { ChatBubble } from '@mui/icons-material';
 
 const socket = io('http://167.99.228.40:5000', {
   transports: ['websocket'],
@@ -168,13 +169,13 @@ function AuctionProduct() {
 </div>
 
 {/* Image Gallery */} 
-<div className="flex gap-6 mb-8">
+<div className="flex flex-col md:flex-row gap-6 mb-8">
   {/* Main Image */}
-  <div className="relative w-2/3">
+  <div className="relative w-full md:w-2/3">
     <img
       src={car.images[0]}
       alt="Main car"
-      className="w-full h-[400px] object-cover rounded-xl shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105"
+      className="w-full h-[300px] md:h-[400px] object-cover rounded-xl shadow-lg cursor-pointer transition-transform duration-300 hover:scale-105"
       onClick={() => openModal(car.images[0])}
     />
     <span className="absolute top-3 left-3 bg-green-600 text-white text-sm px-3 py-1 rounded-lg shadow-md">
@@ -183,18 +184,19 @@ function AuctionProduct() {
   </div>
 
   {/* Thumbnail Images */}
-  <div className="grid grid-cols-2 gap-4 w-1/3">
+  <div className="grid grid-cols-2 gap-4 w-full md:w-1/3">
     {car.images.slice(1).map((image, index) => (
       <img
         key={index}
         src={image}
         alt={`Thumbnail ${index + 1}`}
-        className="w-full h-[190px] object-cover rounded-xl shadow-md cursor-pointer transition-transform duration-300 hover:scale-105"
+        className="w-full h-[140px] md:h-[190px] object-cover rounded-xl shadow-md cursor-pointer transition-transform duration-300 hover:scale-105"
         onClick={() => openModal(image)}
       />
     ))}
   </div>
 </div>
+
 
 
         {/* Place Bid Section */}
@@ -290,7 +292,7 @@ function AuctionProduct() {
             <p className="flex items-start">
               <FaTag className="text-gray-600 mr-3" size={24} />
               <span className="text-lg">
-                <span className="font-semibold">Starting Bid:</span> 
+                <span className="font-semibold">Starting Price:</span> 
                 
                 <span className="mx-2 bg-green-500 text-white text-sm px-2 py-1 rounded">{car.initialBid}</span>
               </span>
@@ -342,6 +344,7 @@ function AuctionProduct() {
           </a>
         </div>
       </div>
+      
     </div>
     <FooterOne/>
   </div>

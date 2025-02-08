@@ -25,8 +25,7 @@ function FooterOne() {
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:underline">Home</a></li>
                 <li><a href="#" className="hover:underline">About</a></li>
-                <li><a href="#" className="hover:underline">Careers</a></li>
-                <li><a href="#" className="hover:underline">Investors</a></li>
+               
               </ul>
             </div>
 
@@ -36,9 +35,7 @@ function FooterOne() {
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:underline">Auctions</a></li>
                 <li><a href="#" className="hover:underline">Get Started</a></li>
-                <li><a href="#" className="hover:underline">Contact</a></li>
-                <li><a href="#" className="hover:underline">Pricing</a></li>
-                <li><a href="#" className="hover:underline">Inventory Near You</a></li>
+               
               </ul>
             </div>
 

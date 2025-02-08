@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { TiHome, TiChartBar, TiUser } from 'react-icons/ti';
 import { FiMenu, FiChevronLeft } from 'react-icons/fi';
-
 const MemberLayout = ({ children }) => {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(window.innerWidth > 768);
   const location = useLocation();
@@ -83,6 +82,7 @@ const MemberLayout = ({ children }) => {
               </Link>
             </li>
           </ul>
+          
         </nav>
         {/* Footer */}
         <div className="py-4 px-6 bg-gray-900 text-sm text-center">

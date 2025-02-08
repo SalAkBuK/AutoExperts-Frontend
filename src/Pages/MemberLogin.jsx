@@ -7,6 +7,7 @@ import logo from '../assets/AdminLogin/Icon.png';
 import profileIcon from '../assets/AdminLogin/Profile.svg';
 import Email from '../assets/AdminLogin/email.svg';
 import lockIcon from '../assets/AdminLogin/Lock.svg';
+import { motion } from "framer-motion";
 
 
 // npm install formik yup axios 
@@ -45,86 +46,102 @@ function MemberLogin() {
 
   return (
     <div className="flex h-screen dark:bg-[#0C0C1D]">
-    <div className="hidden lg:flex w-1/2 dark:bg-[#0C0C1D] items-center justify-center">
-      <div className="text-center">
+  {/* Left Section: Logo & Links */}
+  <div className="hidden lg:flex w-1/2 dark:bg-[#0C0C1D] items-center justify-center">
+    <div className="text-center">
       <img src={logo} alt="AutoExperts Auctions" className="w-3/3 h-auto mb-20" />
       <div className="flex justify-between mt-8 text-white text-lg">
-      <Link to="/" className="mx-4 hover:underline">Terms of Use</Link>
-    <Link to="/" className="mx-4 hover:underline">Privacy</Link>
-    <Link to="/" className="mx-4 hover:underline">Help</Link>
-    <Link to="/" className="mx-4 hover:underline">Cookie Preference</Link>
+        <Link to="/" className="mx-4 hover:underline">Terms of Use</Link>
+        <Link to="/" className="mx-4 hover:underline">Privacy</Link>
+        <Link to="/" className="mx-4 hover:underline">Help</Link>
+        <Link to="/" className="mx-4 hover:underline">Cookie Preference</Link>
+      </div>
+    </div>
+  </div>
+
+  {/* Right Section: Login Form */}
+  <div className="flex w-full lg:w-1/3 justify-center items-center bg-white mx-10 lg:mx-20 mt-10 mb-10 lg:my-20 shadow-lg rounded-r-3xl">
+    <div className="w-full max-w-md p-8 sm:p-10 md:py-10">
+      <h2 className="text-2xl font-bold text-center mb-6">Member Login</h2>
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        validationSchema={Yup.object({
+          email: Yup.string().email("Invalid email address").required("Required"),
+          password: Yup.string()
+            .matches(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/, 
+              "Password must contain at least one special character and one number")
+            .required("Required"),
+        })}
+        onSubmit={handleLogin}
+      >
+        <Form className="space-y-6">
+          {/* Email Input */}
+          <motion.div key="email" className="relative group" whileHover={{ scale: 1.05 }}>
+            <label 
+              htmlFor="email" 
+              className="absolute -top-2 left-3 bg-gray-200 px-2 text-xs font-semibold text-black"
+            >
+              Email:
+            </label>
+            <Field
+              id="email"
+              type="email"
+              name="email"
+              className={`w-full px-4 py-3 rounded-lg text-black bg-transparent border border-gray-500 
+                focus:border-orange-400 focus:ring-2 focus:ring-orange-400 outline-none shadow-lg 
+                transition-all duration-300`}
+              placeholder="Enter Email"
+            />
+            <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+          </motion.div>
+
+          {/* Password Input */}
+          <motion.div key="password" className="relative group" whileHover={{ scale: 1.05 }}>
+            <label 
+              htmlFor="password" 
+              className="absolute -top-2 left-3 bg-gray-200 px-2 text-xs font-semibold text-black"
+            >
+              Password:
+            </label>
+            <Field
+              id="password"
+              type="password"
+              name="password"
+              className={`w-full px-4 py-3 rounded-lg text-black bg-transparent border border-gray-500 
+                focus:border-orange-400 focus:ring-2 focus:ring-orange-400 outline-none shadow-lg 
+                transition-all duration-300`}
+              placeholder="Enter Password"
+            />
+            <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
+          </motion.div>
+
+          {/* Submit Button */}
+          <motion.div whileHover={{ scale: 1.05 }}>
+  <button 
+    type="submit" 
+    className="w-full bg-blue-600 text-white py-3 mt-6 rounded-lg font-semibold transition-all duration-300 shadow-md 
+              hover:bg-blue-500 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+  >
+    Log In
+  </button>
+</motion.div>
+
+
+        </Form>
+      </Formik>
+
+      {/* Forgot Password Link */}
+      <div className="text-center mt-4">
+        <Link to="/forgot-password" className="text-orange-500 hover:underline">
+          Forgot Password?
+        </Link>
+      </div>
+    </div>
+  </div>
 </div>
-      </div>
-    </div>
-
-    <div className="flex w-full lg:w-1/3 justify-center items-center bg-white mx-10 lg:mx-20 mt-10 mb-10 lg:my-20 shadow-lg rounded-full lg:rounded-none lg:rounded-r-3xl">
 
 
-
-      <div className="w-full max-w-md p-8 sm:p-6 md:py-4">
-        <h2 className="text-2xl font-bold text-center mb-6">Member Login</h2>
-    <Formik
-      initialValues={{
-        email: "",
-        password: "",
-      }}
-      validationSchema={Yup.object({
-        email: Yup.string()
-          .email("Invalid email address")
-          .required("Required"),
-        password: Yup.string()
-          .matches(
-            /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/,
-            "Password must contain at least one special character and one number"
-          )
-          .required("Required"),
-      })}
-      onSubmit={handleLogin}
-    >
-     <Form className="space-y-6 ">
-             
-
-              <div className="form-group">
-                <label className="block text-gray-700">Email Address</label>
-                <div className="flex items-center border-b-2 border-gray-300 py-2">
-                  <img src={Email} alt="Profile Icon" className="w-6 h-6 mr-3" />
-                  <Field
-                    type="email"
-                    name="email"
-                    className="form-control w-full border-none focus:outline-none focus:ring-0"
-                    placeholder="Enter Email"
-                  />
-                </div>
-                <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
-              </div>
-
-              <div className="form-group">
-                <label className="block text-gray-700">Password</label>
-                <div className="flex items-center border-b-2 border-gray-300 py-2">
-                  <img src={lockIcon} alt="Lock Icon" className="w-6 h-6 mr-3" />
-                  <Field
-                    type="password"
-                    name="password"
-                    className="form-control w-full border-none focus:outline-none focus:ring-0"
-                    placeholder="Password"
-                  />
-                </div>
-                <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
-              </div>
-
-              <button type="submit" className="w-full bg-orange-400 text-white py-2 rounded-lg hover:bg-orange-600" >
-                Log In
-              </button>
-            </Form>
-          </Formik>
-          <div className="text-center mt-4">
-            <a href="/forgot-password" className="text-orange-500 hover:underline">
-              Forgot Password?
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
+  
   );
 }
 

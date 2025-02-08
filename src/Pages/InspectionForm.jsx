@@ -236,16 +236,37 @@ const formik = useFormik({
     setOtp(e.target.value);
   };
 
+  
+  const formatPhoneNumber = (number) => {
+    let cleanedNumber = number.replace(/\D/g, ""); // Remove non-numeric characters
+  
+    if (cleanedNumber.startsWith("0") && cleanedNumber.length === 11) {
+      return `+92${cleanedNumber.slice(1)}`; // Convert '03131681095' to '+923131681095'
+    }
+  
+    return cleanedNumber; // Return as is if it's already correct
+  };
+  
   const handleSendOtp = async (e) => {
     e.preventDefault();
-    if (!formik.values.contactNumber) {
+    let rawNumber = formik.values.contactNumber.trim();
+  
+    if (!rawNumber) {
       alert("Please enter a contact number first");
       return;
     }
+  
+    const formattedNumber = formatPhoneNumber(rawNumber);
+  
+    if (formattedNumber.length !== 13) {
+      alert("Please enter a valid 11-digit phone number starting with 0 (e.g., 03131681095)");
+      return;
+    }
+  
     try {
       const response = await axios.post(
         "http://167.99.228.40:5000/api/bookings/send-otp",
-        { contactNumber: formik.values.contactNumber },
+        { contactNumber: formattedNumber }, // Send formatted number
         {
           headers: {
             "Content-Type": "application/json",
@@ -254,7 +275,7 @@ const formik = useFormik({
       );
       if (response.data.success) {
         setOtpSent(true);
-        setToken(response.data.token); // Save the token
+        setToken(response.data.token);
       } else {
         alert("Failed to send OTP");
       }
@@ -263,20 +284,38 @@ const formik = useFormik({
       console.error(error);
     }
   };
-
+  
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
+    let rawNumber = formik.values.contactNumber.trim();
+  
+    if (!rawNumber) {
+      alert("Please enter a contact number first");
+      return;
+    }
+  
+    const formattedNumber = formatPhoneNumber(rawNumber);
+  
+    if (formattedNumber.length !== 13) {
+      alert("Invalid phone number format");
+      return;
+    }
+  
     try {
-      const response = await axios.post("http://167.99.228.40:5000/api/bookings/verify-otp", {
-        contactNumber: formik.values.contactNumber,
-        otp,
-        token
-      }, {
-        headers: {
-          "Content-Type": "application/json",
+      const response = await axios.post(
+        "http://167.99.228.40:5000/api/bookings/verify-otp",
+        {
+          contactNumber: formattedNumber, // Verify formatted number
+          otp,
+          token,
         },
-      });
-
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
       if (response.data.success) {
         setOtpVerified(true);
         alert("OTP verified successfully!");
@@ -288,13 +327,13 @@ const formik = useFormik({
       alert("Error verifying OTP");
     }
   };
-
+  
 
   return (
 <div>
     <MainHeader/>
-    <div className="flex items-center justify-center min-h-screen bg-gray-200  pt-20  ">
-    <div className="bg-gray-600 dark:bg-slate-850/80 shadow-lg p-8 rounded-lg w-full max-w-2xl mb-20 text-white">
+    <div className="flex items-center justify-center min-h-screen bg-white  pt-20  ">
+    <div className="bg-white shadow-lg p-8 rounded-lg w-full max-w-2xl mb-20 text-black -mt-20">
 
   <h1 className="text-3xl font-bold text-center pb-10">INSPECTION BOOKING</h1>
 
@@ -304,17 +343,19 @@ const formik = useFormik({
     {/* Row 1 */}
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div className="flex flex-col">
+    
   <motion.div 
     key="name" 
     className="relative group" 
     whileHover={{ scale: 1.05 }}
   >
-    <label 
+  <label 
       htmlFor="name" 
-      className="absolute -top-2 left-3 bg-[#123a5d] px-2 text-xs font-semibold text-sky-400"
+      className="absolute -top-2 left-3 bg-gray-200 px-2 text-xs font-semibold text-black"
     >
       Name:
     </label>
+    
     <input
       id="name"
       type="text"
@@ -322,7 +363,7 @@ const formik = useFormik({
       value={formik.values.name}
       onChange={formik.handleChange}
       onBlur={formik.handleBlur}
-      className={`w-full px-4 py-3 rounded-lg text-white bg-transparent border border-gray-500 ${
+      className={`w-full px-4 py-3 rounded-lg text-black bg-transparent border border-gray-500 ${
         formik.touched.name && formik.errors.name 
           ? "border-red-500 focus:ring-red-600" 
           : "focus:ring-blue-500"
@@ -343,7 +384,7 @@ const formik = useFormik({
   >
     <label 
       htmlFor="contactNumber" 
-      className="absolute -top-2 left-3 bg-[#123a5d] px-2 text-xs font-semibold text-sky-400"
+      className="absolute -top-2 left-3 bg-gray-200 px-2 text-xs font-semibold text-black"
     >
       Contact Number:
     </label>
@@ -355,7 +396,7 @@ const formik = useFormik({
         value={formik.values.contactNumber}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        className={`flex-1 px-4 py-3 rounded-lg text-white bg-transparent border border-gray-500 ${
+        className={`flex-1 px-4 py-3 rounded-lg text-black bg-transparent border border-gray-500 ${
           formik.touched.contactNumber && formik.errors.contactNumber 
             ? "border-red-500 focus:ring-red-600" 
             : "focus:ring-blue-500"
@@ -381,41 +422,41 @@ const formik = useFormik({
     {/* Row 2 */}
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     {otpSent && !otpVerified && (
-  <motion.div 
-    key="otp" 
-    className="relative group" 
-    whileHover={{ scale: 1.05 }}
-  >
-    <label 
-      htmlFor="otp" 
-      className="absolute -top-2 left-3 bg-[#123a5d] px-2 text-xs font-semibold text-sky-400"
+    <motion.div
+      key="otp"
+      className="relative group w-full"
+      whileHover={{ scale: 1.05 }}
     >
-      OTP:
-    </label>
-    <div className="flex">
-      <input
-        id="otp"
-        type="text"
-        value={otp}
-        onChange={handleOtpChange}
-        required
-        className={`flex-1 px-4 py-3 rounded-lg text-white bg-transparent border border-gray-500 ${
-          otp && otp.length !== 6
-            ? "border-red-500 focus:ring-red-600"
-            : "focus:ring-blue-500"
-        } focus:border-sky-400 outline-none shadow-lg transition-all duration-300`}
-      />
-      <button
-        onClick={handleVerifyOtp}
-        type="button"
-        disabled={otp.length !== 6}
-        className="ml-2 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+      <label
+        htmlFor="otp"
+        className="absolute -top-2 left-3 bg-gray-200 px-2 text-xs font-semibold text-black"
       >
-        Send
-      </button>
-    </div>
-  </motion.div>
-)}
+        OTP:
+      </label>
+      <div className="flex flex-col sm:flex-row w-full gap-3">
+        <input
+          id="otp"
+          type="text"
+          value={otp}
+          onChange={handleOtpChange}
+          required
+          className={`flex-1 px-4 py-3 rounded-lg text-black bg-transparent border border-gray-500 ${
+            otp && otp.length !== 6
+              ? "border-red-500 focus:ring-red-600"
+              : "focus:ring-blue-500"
+          } focus:border-sky-400 outline-none shadow-lg transition-all duration-300 w-full sm:w-auto`}
+        />
+        <button
+          onClick={handleVerifyOtp}
+          type="button"
+          disabled={otp.length !== 6}
+          className="px-4 py-2 rounded-lg bg-blue-500 text-black hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 w-full sm:w-auto"
+        >
+          Send
+        </button>
+      </div>
+    </motion.div>
+  )}
 
 
       <div className="flex flex-col">
@@ -426,7 +467,7 @@ const formik = useFormik({
   >
     <label 
       htmlFor="email" 
-      className="absolute -top-2 left-3 bg-[#123a5d] px-2 text-xs font-semibold text-sky-400"
+      className="absolute -top-2 left-3 bg-gray-200 px-2 text-xs font-semibold text-black"
     >
       Email:
     </label>
@@ -439,7 +480,7 @@ const formik = useFormik({
       onBlur={() => {
         formik.handleBlur("email");
       }}
-      className={`w-full px-4 py-3 rounded-lg text-white bg-transparent border border-gray-500 ${
+      className={`w-full px-4 py-3 rounded-lg text-black bg-transparent border border-gray-500 ${
         emailValid === false && !isChecking 
           ? "border-red-500 focus:ring-red-600" 
           : "focus:ring-blue-500"
@@ -463,7 +504,7 @@ const formik = useFormik({
   >
     <label 
       htmlFor="address" 
-      className="absolute -top-2 left-3 bg-[#123a5d] px-2 text-xs font-semibold text-sky-400"
+      className="absolute -top-2 left-3 bg-gray-200 px-2 text-xs font-semibold text-black"
     >
       Address:
     </label>
@@ -474,7 +515,7 @@ const formik = useFormik({
       value={formik.values.address}
       onChange={formik.handleChange}
       onBlur={formik.handleBlur}
-      className={`px-4 py-3 rounded-lg text-white bg-transparent border border-gray-500 ${
+      className={`px-4 py-3 rounded-lg text-black border border-gray-500 ${
         formik.touched.address && formik.errors.address
           ? "border-red-500 focus:ring-red-600"
           : "focus:ring-blue-500"
@@ -498,7 +539,7 @@ const formik = useFormik({
   >
     <label 
       htmlFor="date" 
-      className="absolute -top-2 left-3 bg-[#123a5d] px-2 text-xs font-semibold text-sky-400"
+      className="absolute -top-2 left-3 bg-gray-200 px-2 text-xs font-semibold text-black"
     >
       Date:
     </label>
@@ -539,7 +580,7 @@ const formik = useFormik({
   >
     <label 
       htmlFor="time" 
-      className="absolute -top-2 left-3 bg-[#123a5d] px-2 text-xs font-semibold text-sky-400"
+      className="absolute -top-2 left-3 bg-gray-200 px-2 text-xs font-semibold text-black"
     >
       Time:
     </label>
@@ -569,8 +610,8 @@ const formik = useFormik({
           ...base,
           backgroundColor: state.selectProps.menuIsOpen
             ? window.matchMedia("(prefers-color-scheme: dark)").matches
-              ? "rgba(57, 71, 136, 0.8)" // Dark mode: slate-950/80
-              : "#3730a3" // Light mode: indigo-800
+              ? "rgb(255, 255, 255)" // Dark mode: slate-950/80
+              : "#ffffff" // Light mode: indigo-800
             : "transparent",
           borderRadius: "8px",
           padding: "4px",
@@ -579,7 +620,7 @@ const formik = useFormik({
         menuList: (base) => ({
           ...base,
           backgroundColor: window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "rgba(5, 18, 77, 0.8)" // Dark mode: slate-950/80
+            ? "rgba(255, 255, 255, 0.64)" // Dark mode: slate-950/80
             : "#3730a3", // Light mode: indigo-800
           borderRadius: "8px",
           color: "white",

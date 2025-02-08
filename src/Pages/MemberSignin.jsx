@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from 'axios';
 import * as Yup from 'yup';
 import logo from '../assets/AdminLogin/Icon.png';
+import { motion } from "framer-motion";
 
 function MemberSignin() {
   const navigate = useNavigate();
@@ -28,11 +29,11 @@ function MemberSignin() {
       name: Yup.string().required("Required"),
       email: Yup.string().email("Invalid email address").required("Required"),
       password: Yup.string()
-        .matches(
-          /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/,
-          "Password must contain at least one special character and one number"
-        )
-        .required("Required"),
+      .matches(
+        /^(?=.*[0-9])(?=.*[!@#$%^&*()_+={}\[\]:;"'<>,.?/])(?=.*[A-Z]).{8,}$/,
+        "Password must be at least 8 characters long, contain one uppercase letter, one number, and one special character"
+      )
+    ,
       confirmPassword: Yup.string()
         .oneOf([Yup.ref('password'), null], 'Passwords must match')
         .required('Please confirm your password'),
@@ -51,41 +52,54 @@ function MemberSignin() {
       console.log("Sign up function triggered");
       
       try {
-        console.log("FORM DATA: ", values);
-    
-        // Send registration data to your server
-        const res = await axios.post('http://167.99.228.40:5000/api/auth/register', values);
+        const res = await axios.post(
+          'http://167.99.228.40:5000/api/auth/register',
+          JSON.stringify(values),  // Ensure it's sent as raw JSON
+          {
+            headers: {
+              'Content-Type': 'application/json',  // Explicitly tell server it's JSON
+            }
+          }
+        );
+      
         const { token, sessionUrl } = res.data;
-        console.log(res);
-    
-        // Decode the token to get the member ID
-        const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        const memberId = decodedToken.id;
-    
-        // Store the token in localStorage
+        console.log("Response:", res);
+      
+        // Decode JWT token safely
+        try {
+          const decodedToken = JSON.parse(atob(token.split('.')[1]));
+          const memberId = decodedToken?.id || null;
+        } catch (error) {
+          console.error("Error decoding token:", error);
+        }
+      
         localStorage.setItem('token', token);
-    
-        // Step 1: Close the sign-up page (optional)
-        window.close();  // Only works if the page was opened via JavaScript (e.g., window.open)
-    
-        // Step 2: Open the Stripe checkout page in a new tab
-        window.open(sessionUrl, "_blank");
-    
-    } catch (err) {
-        setError(err.response?.data?.message || 'Registration failed. Please try again.');
-    }
+      
+        // Redirect to Stripe checkout
+        window.location.href = sessionUrl;
+      
+      } catch (err) {
+        console.error("Registration Error:", err.response?.data);
+      
+        // Extract and display error message
+        const errorMessage = err.response?.data?.msg || 'Registration failed. Please try again.';
+        setError(errorMessage);  // Assuming `setError` updates a state variable for displaying errors
+      }
+      
+      
     
     }
   });
 
   return (
-    <div className="flex dark:bg-[#0C0C1D]">
+    <div className="flex dark:bg-[#0C0C1D] min-h-screen">
+      {/* Left Side */}
       <div className="hidden lg:flex w-1/2 dark:bg-[#0C0C1D] items-center justify-center">
         <div className="text-center">
-        <Link to="/" className="block">
-  <img src={logo} alt="AutoExperts Auctions" className="w-3/3 h-auto mb-20" />
-</Link>
-            <div className="flex justify-between mt-8 text-white text-lg">
+          <Link to="/" className="block">
+            <img src={logo} alt="AutoExperts Auctions" className="w-3/3 h-auto mb-20" />
+          </Link>
+          <div className="flex justify-between mt-8 text-white text-lg">
             <Link to="/" className="mx-4 hover:underline">Terms of Use</Link>
             <Link to="/" className="mx-4 hover:underline">Privacy</Link>
             <Link to="/" className="mx-4 hover:underline">Help</Link>
@@ -94,177 +108,64 @@ function MemberSignin() {
         </div>
       </div>
 
-      <div className="flex w-full lg:w-1/3 justify-top items-top bg-white mx-10 lg:mx-20 mt-10 mb-10 lg:my-5 shadow-lg rounded-r-3xl">
-        <div className="w-full max-w-md p-8 sm:p-10 md:py-10">
+      {/* Right Side */}
+      <div className="flex w-full lg:w-1/3 bg-white mx-10 lg:mx-20 mt-10 mb-10 lg:my-5 shadow-lg rounded-r-3xl p-8 sm:p-10">
+        <div className="w-full max-w-md">
           <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
           <form onSubmit={formik.handleSubmit} className="space-y-5">
-            <div className="form-group">
-              <label className="block text-gray-700"><strong>Full Name</strong></label>
-              <div className="flex items-center border-b-2 border-gray-300 py-2">
+            {[
+              { name: "name", label: "Full Name", type: "text" },
+              { name: "email", label: "Email Address", type: "email" },
+              { name: "password", label: "Password", type: "password" },
+              { name: "confirmPassword", label: "Confirm Password", type: "password" },
+              { name: "city", label: "City", type: "text" },
+              { name: "address", label: "Address", type: "text" },
+              { name: "cnic", label: "CNIC", type: "text" },
+              { name: "number", label: "Phone Number", type: "text" },
+              { name: "dateOfBirth", label: "Date of Birth", type: "date" },
+            ].map((field) => (
+              <motion.div key={field.name} className="relative group" whileHover={{ scale: 1.05 }}>
+                <label
+                  htmlFor={field.name}
+                  className="absolute -top-2 left-3 bg-gray-200 px-2 text-xs font-semibold text-gray-700"
+                >
+                  {field.label}
+                </label>
                 <input
-                  type="text"
-                  name="name"
-                  className="form-control w-full border-none focus:outline-none focus:ring-0"
-                  placeholder="Full Name"
-                  value={formik.values.name}
+                  id={field.name}
+                  type={field.type}
+                  name={field.name}
+                  value={formik.values[field.name]}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
+                  className={`w-full px-4 py-3 rounded-lg text-black bg-transparent border border-gray-500 shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 ${
+                    formik.touched[field.name] && formik.errors[field.name]
+                      ? "border-red-500 focus:ring-red-600"
+                      : "focus:ring-blue-500"
+                  }`}
                 />
-              </div>
-              {formik.touched.name && formik.errors.name && <div className="text-red-600 text-md mt-1">{formik.errors.name}</div>}
-            </div>
-
-            <div className="form-group">
-  <label className="block text-gray-700"><strong>Email Address</strong></label>
-  <div className="flex items-center border-b-2 border-gray-300 py-2">
-  <input
-            type="email"
-            name="email"
-            className="form-control w-full border-none focus:outline-none focus:ring-0"
-            placeholder="Enter Email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={async (e) => {
-              formik.handleBlur(e); // Trigger formik's built-in blur handling
-             
-            }}
-          />
-        </div>
-
-        {/* Email Validation Error from Formik */}
-        {formik.touched.email && formik.errors.email && (
-          <div className="text-red-600 text-md mt-1">{formik.errors.email}</div>
-        )}
-
-        {/* Custom Email Error for Invalid Email */}
-        {error && <div className="text-red-600 text-md mt-1">{error}</div>}
-</div>
-
-
-            <div className="form-group">
-              <label className="block text-gray-700"><strong>Password</strong></label>
-              <div className="flex items-center border-b-2 border-gray-300 py-2">
-                <input
-                  type="password"
-                  name="password"
-                  className="form-control w-full border-none focus:outline-none focus:ring-0"
-                  placeholder="Password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </div>
-              {formik.touched.password && formik.errors.password && <div className="text-red-600 text-md mt-1">{formik.errors.password}</div>}
-            </div>
-
-            <div className="form-group">
-              <label className="block text-gray-700"><strong>Confirm Password</strong></label>
-              <div className="flex items-center border-b-2 border-gray-300 py-2">
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  className="form-control w-full border-none focus:outline-none focus:ring-0"
-                  placeholder="Confirm Password"
-                  value={formik.values.confirmPassword}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </div>
-              {formik.touched.confirmPassword && formik.errors.confirmPassword && <div className="text-red-600 text-md mt-1">{formik.errors.confirmPassword}</div>}
-            </div>
-
-            <div className="form-group">
-              <label className="block text-gray-700"><strong>City</strong></label>
-              <div className="flex items-center border-b-2 border-gray-300 py-2">
-                <input
-                  type="text"
-                  name="city"
-                  className="form-control w-full border-none focus:outline-none focus:ring-0"
-                  placeholder="City"
-                  value={formik.values.city}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </div>
-              {formik.touched.city && formik.errors.city && <div className="text-red-600 text-md mt-1">{formik.errors.city}</div>}
-            </div>
-
-            <div className="form-group">
-              <label className="block text-gray-700"><strong>Address</strong></label>
-              <div className="flex items-center border-b-2 border-gray-300 py-2">
-                <input
-                  type="text"
-                  name="address"
-                  className="form-control w-full border-none focus:outline-none focus:ring-0"
-                  placeholder="Address"
-                  value={formik.values.address}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </div>
-              {formik.touched.address && formik.errors.address && <div className="text-red-600 text-md mt-1">{formik.errors.address}</div>}
-            </div>
-
-            <div className="form-group">
-              <label className="block text-gray-700"><strong>CNIC</strong></label>
-              <div className="flex items-center border-b-2 border-gray-300 py-2">
-                <input
-                  type="text"
-                  name="cnic"
-                  className="form-control w-full border-none focus:outline-none focus:ring-0"
-                  placeholder="CNIC"
-                  value={formik.values.cnic}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </div>
-              {formik.touched.cnic && formik.errors.cnic && <div className="text-red-600 text-md mt-1">{formik.errors.cnic}</div>}
-            </div>
-
-            <div className="form-group">
-              <label className="block text-gray-700"><strong>Phone Number</strong></label>
-              <div className="flex items-center border-b-2 border-gray-300 py-2">
-                <input
-                  type="text"
-                  name="number"
-                  className="form-control w-full border-none focus:outline-none focus:ring-0"
-                  placeholder="Phone Number"
-                  value={formik.values.number}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </div>
-              {formik.touched.number && formik.errors.number && <div className="text-red-600 text-md mt-1">{formik.errors.number}</div>}
-            </div>
-
-            <div className="form-group">
-              <label className="block text-gray-700"><strong>Date of Birth</strong></label>
-              <div className="flex items-center border-b-2 border-gray-300 py-2">
-                <input
-                  type="date"
-                  name="dateOfBirth"
-                  className="form-control w-full border-none focus:outline-none focus:ring-0"
-                  value={formik.values.dateOfBirth}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </div>
-              {formik.touched.dateOfBirth && formik.errors.dateOfBirth && <div className="text-red-600 text-md mt-1">{formik.errors.dateOfBirth}</div>}
-            </div>
+                {formik.touched[field.name] && formik.errors[field.name] && (
+                  <div className="text-red-500 text-sm mt-1">{formik.errors[field.name]}</div>
+                )}
+              </motion.div>
+            ))}
 
             {error && <div className="text-red-600 text-md mt-1">{error}</div>}
 
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-2 mt-6 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring-2"
-            >
-              Sign Up
-            </button>
+            <motion.div whileHover={{ scale: 1.05 }}>
+  <button
+    type="submit"
+    className="w-full bg-[#2563eb] text-white py-3 mt-6 rounded-lg font-semibold transition-all duration-300 shadow-md hover:bg-[#1e40af] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#1e40af]"
+  >
+    Sign Up
+  </button>
+</motion.div>
+
           </form>
 
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
-              Already have an account? <Link to="/member-login" className="text-blue-600">Login</Link>
+              Already have an account? <Link to="/member-login" className="text-blue-600 hover:underline">Login</Link>
             </p>
           </div>
         </div>

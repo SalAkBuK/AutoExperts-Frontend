@@ -1,27 +1,4 @@
-
-
-/*
- Step  1: Aik bara container ho, position absolute kr do usmy, withing an image wrapper
- Step 2: "Up" and "Down" naam k 2 div hain. Dono ko col krain gy and left pr kr dengy. 
-             Try krain of some way k Down ko kisi way say Downn ad left kr sakty ya nai.
-Step 3: "Up" k content ko jusstify contet kr dein
-
-
-<div className="content">
-<div classsName = " UP">
- <img src = {logo} className = "logo"/>
-
- <div className= "name">Auto Expert </div>
-
-
-</div>
-
-
-<div classsName = " Down"></div>
-
-</div>
-*/
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate  } from 'react-router-dom';
 import LandingPage from './Pages/LandingPage';
 import AdminLogin from './Pages/AdminLogin';
 import AdminDashboard from './Pages/AdminDashboard';
@@ -46,6 +23,7 @@ import MemberLayout from './layout/Memberlayout';
 import MemberPlatform from './Pages/Auction/MemberPlatform';
 import SuccessForm from './Pages/Forms/success';
 import FailureForm from './Pages/Forms/fail';
+import ChatBot from './components/ChatBot';
 
 
 function App() {
@@ -71,7 +49,7 @@ function App() {
         <Route path="/member" element={<Member />} />
         <Route path="/member-login" element={<MemberLogin />} />
         <Route path="/member-signin" element={<MemberSignin />} />
-        
+        <Route path='/ai-assistant' element={<ChatBot/>}/>
         <Route path="/forms/failure" element={<FailureForm />} />
         <Route path="/forms/success" element={<SuccessForm />} />
 
@@ -88,6 +66,7 @@ function App() {
         {/* Add a catch-all route to handle unauthorized access */}
         <Route path="*" element={<Navigate to="/admin" replace />} />
       </Routes>
+
       </div>
     </BrowserRouter>
     </>

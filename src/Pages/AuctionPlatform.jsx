@@ -8,7 +8,7 @@ import FooterOne from '../components/FooterOne';
 import AuctionHeader from '../components/AuctionHeader';
 import MemberLayout from '../layout/MemberLayout';
 import { motion } from 'framer-motion';
-
+import Chatbot from '../components/ChatBot';
 const ITEMS_PER_PAGE = 8; // Define items per page
 
 function AuctionPlatform() {
@@ -439,6 +439,7 @@ function AuctionPlatform() {
             </div>
           </div>
         </main>
+      
       </div>
       <FooterOne />
     </MemberLayout>
