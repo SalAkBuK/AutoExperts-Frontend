@@ -92,9 +92,9 @@ function MemberSignin() {
   });
 
   return (
-    <div className="flex dark:bg-[#0C0C1D] min-h-screen">
+    <div className="flex bg-[#0C0C1D] min-h-screen">
       {/* Left Side */}
-      <div className="hidden lg:flex w-1/2 dark:bg-[#0C0C1D] items-center justify-center">
+      <div className="hidden lg:flex w-1/2 bg-[#0C0C1D] items-center justify-center">
         <div className="text-center">
           <Link to="/" className="block">
             <img src={logo} alt="AutoExperts Auctions" className="w-3/3 h-auto mb-20" />

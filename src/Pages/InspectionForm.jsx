@@ -609,7 +609,7 @@ const formik = useFormik({
         menu: (base, state) => ({
           ...base,
           backgroundColor: state.selectProps.menuIsOpen
-            ? window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? window.matchMedia("(prefers-color-scheme: white)").matches
               ? "rgb(255, 255, 255)" // Dark mode: slate-950/80
               : "#ffffff" // Light mode: indigo-800
             : "transparent",
@@ -619,9 +619,9 @@ const formik = useFormik({
         }),
         menuList: (base) => ({
           ...base,
-          backgroundColor: window.matchMedia("(prefers-color-scheme: dark)").matches
+          backgroundColor: window.matchMedia("(prefers-color-scheme: white)").matches
             ? "rgba(255, 255, 255, 0.64)" // Dark mode: slate-950/80
-            : "#3730a3", // Light mode: indigo-800
+            : "#ffffff", // Light mode: indigo-800
           borderRadius: "8px",
           color: "white",
         }),

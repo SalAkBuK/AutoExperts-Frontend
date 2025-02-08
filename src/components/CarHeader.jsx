@@ -8,7 +8,7 @@ const Navbar = () => {
   const showAdminButton = location.pathname === '/';
 
   return (
-    <nav className="pb-10 bg-white border-gray-200 dark:bg-[#0C0C1D]">
+    <nav className="pb-10 bg-[#0A0D1C] border-gray-200 ">
       <div className="pb-20 max-w-10xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <div className="flex lg:flex-1">
           <Link to="/" className="flex-shrink-0">

@@ -12,7 +12,7 @@ import profile from '../../assets/Assets/profile.png';
 
 const Sidebar = () => {
   return (
-    <div className="h-screen bg-indigo-900 dark:bg-slate-950/50 shadow-lg dark:bg-slate-900">
+    <div className="h-screen bg-indigo-900 bg-slate-950/50 shadow-lg bg-slate-900">
       <div className="flex flex-col gap-3 w-full text-slate-300 h-full justify-between">
         <div className="flex flex-col gap-10 px-4 mt-10">
           <div className="flex items-center justify-center gap-2">

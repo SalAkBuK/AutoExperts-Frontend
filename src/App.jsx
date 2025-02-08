@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate  } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate  } from 'react-router-dom';
 import LandingPage from './Pages/LandingPage';
 import AdminLogin from './Pages/AdminLogin';
 import AdminDashboard from './Pages/AdminDashboard';
@@ -31,7 +31,7 @@ function App() {
 
   return (
     <>
-       <BrowserRouter>
+       <HashRouter>
        <div className="flex flex-col min-h-screen">
        <ScrollToTop />
       <Routes>
@@ -68,7 +68,7 @@ function App() {
       </Routes>
 
       </div>
-    </BrowserRouter>
+    </HashRouter>
     </>
   )
 }

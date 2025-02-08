@@ -7,7 +7,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="dark:bg-[#0C0C1D] text-white rounded-b-7xl h-40 md:h-44 lg:h-48" 
+    <nav className="bg-[#0C0C1D] text-white rounded-b-7xl h-40 md:h-44 lg:h-48" 
       style={{ borderBottomLeftRadius: '50px', borderBottomRightRadius: '50px' }}>
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

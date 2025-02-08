@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 dark:bg-[#0C0C1D] -mr-10 pb-10">
+    <nav className=" border-b border-gray-200 bg-[#0C0C1D] -mr-10 pb-10">
       <div className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-40">
         
         {/* Logo */}
@@ -74,7 +74,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Links - Visible only on small screens when menu is open */}
       {menuOpen && (
-        <div className="lg:hidden bg-white dark:bg-[#0C0C1D] px-4 py-2 space-y-1">
+        <div className="lg:hidden bg-white bg-[#0C0C1D] px-4 py-2 space-y-1">
           {['For Buyers', 'For Sellers', 'Services', 'Company'].map((item) => (
             <div key={item} className="relative group">
               <Link to="#" className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">

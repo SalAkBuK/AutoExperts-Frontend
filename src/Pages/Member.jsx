@@ -4,7 +4,7 @@ import logo from '../assets/AdminLogin/Icon.png';
 
 function Member() {
   return (
-    <div className="flex flex-col lg:flex-row h-screen dark:bg-[#0C0C1D] items-center justify-center px-6 lg:px-0">
+    <div className="flex flex-col lg:flex-row h-screen bg-[#0C0C1D] items-center justify-center px-6 lg:px-0">
 
     {/* Mobile - Centered at the top */}
 <div className="fixed top-0 left-0 w-full flex flex-col items-center bg-[#0C0C1D] p-4 z-50 sm:hidden">
