@@ -1,10 +1,10 @@
 import React, { forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
-import SlotBookingSVG from "../assets/Assets/SlotBooking.svg";
-import UsedCarsSVG from "../assets/Assets/UsedCars.svg";
-import AuctionPlatfromSVG from "../assets/Assets/AuctionPlatform.svg";
-import CarPrice from "../assets/Assets/CarPricePredictor.svg";
-import AiAssisstant from "../assets/icon-ai.png";
+import SlotBookingSVG from "../assets/Assets/Become.svg";
+import UsedCarsSVG from "../assets/Assets/Used.svg";
+import AuctionPlatfromSVG from "../assets/Assets/Auction.svg";
+import CarPrice from "../assets/Assets/predict.svg";
+import AiAssisstant from "../assets/Assets/assisstant.svg";
 
 const services = [
   {
@@ -52,8 +52,8 @@ const OurServices = forwardRef((props, ref) => {
   };
 
   return (
-    <section ref={ref} className="bg-[#0C0C1D] py-16 px-6 md:px-20 rounded-t-7xl text-white relative">
-      <h2 className="text-5xl font-extrabold text-center mb-12 text-white">
+    <section ref={ref} className="bg-white py-16 px-6 md:px-20 rounded-t-7xl text-white relative -mt-20">
+      <h2 className="text-5xl font-extrabold text-center mb-12 text-black">
         <span className="text-orange-500">/</span> OUR SERVICES
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -62,7 +62,7 @@ const OurServices = forwardRef((props, ref) => {
             key={index}
             className="bg-[#1A1B2F] p-6 rounded-3xl shadow-lg hover:scale-105 transition-transform text-center"
           >
-            <img src={service.image} alt={service.title} className="w-40 h-40 mx-auto mb-6 object-contain" />
+            <img src={service.image} alt={service.title} className="w-50 h-40 mx-auto mb-6 object-contain" />
             <h3 className="text-2xl font-bold text-orange-400 mb-3">{service.title}</h3>
             <p className="text-gray-300 mb-6 leading-relaxed font-bold">{service.description}</p>
             <button
