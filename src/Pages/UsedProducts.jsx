@@ -2,9 +2,10 @@ import React, { useState,useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import CarHeader from '../components/CarHeader';
 import FooterOne from '../components/FooterOne';
-import { FaDoorOpen, FaHammer, FaCheckCircle, FaTimes, FaBook, FaCar, FaCogs, FaTachometerAlt, FaTag, FaDollarSign } from 'react-icons/fa';
+import { FaDoorOpen, FaHammer, FaCheckCircle, FaTimes, FaBook, FaCar, FaCogs, FaTachometerAlt, FaTag, FaDollarSign, FaGasPump } from 'react-icons/fa';
 import { FaFileAlt } from 'react-icons/fa';
 import axios from 'axios'; // Add this import
+
 
 
 
@@ -62,17 +63,39 @@ function UsedProducts() {
     </div>
       <div className="relative -mt-20 bg-white rounded-tl-7xl rounded-tr-7xl py-12 px-4 sm:px-6 lg:px-8 shadow-lg mb-20">
         <div className="container mx-auto p-4 max-w-6xl bg-white rounded-lg shadow-lg">
-          <div className="flex justify-between items-start mb-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start mb-4">
+            
             <div>
               <h1 className="text-3xl font-semibold text-left">{car?.title}</h1>
               <p className="text-gray-500">{car?.carDetails}</p>
             </div>
+
+            <div className='text-left sm:text-right mt-4 sm:mt-0'>
+            <p className="text-xl font-semibold text-custom-blue-text">{`Price: PKR: ${car.price}`}
+            </p>
+
+            </div>
           </div>
-          <div className="flex gap-2 mb-6">
-            <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full">{car?.model}</span>
-            <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full">{car?.mileage} miles</span>
-            <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full">Automatic</span>
-            <span className="px-3 py-1 bg-blue-400 text-gray-700 rounded-full">{car?.FuelType}</span>
+          <div className="flex flex-wrap gap-2 mb-6">
+                  <span className="px-3 py-1 bg-custom-blue-bg text-custom-blue-text rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-[15px] flex items-center space-x-2">
+            <FaCar className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-custom-blue-text" />
+            <span>{car.model}</span>
+          </span>
+          
+          <span className="px-3 py-1 bg-custom-blue-bg text-custom-blue-text rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-[15px] flex items-center space-x-2">
+            <FaCar className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-custom-blue-text" />
+            <span>{car.mileage}{' '}miles</span>
+          </span>
+          
+          <span className="px-3 py-1 bg-custom-blue-bg text-custom-blue-text rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-[15px] flex items-center space-x-2">
+            <FaCogs className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-custom-blue-text" />
+            <span>Automatic</span>
+          </span>
+          
+          <span className="px-3 py-1 bg-custom-blue-bg text-custom-blue-text rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-[15px] flex items-center space-x-2">
+            <FaGasPump className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-custom-blue-text" />
+            <span>{car.FuelType}</span>
+          </span>
           </div>
           <div className="grid grid-cols-2 gap-2 w-1/2">
   {car?.images?.length > 1 ? (

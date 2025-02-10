@@ -14,7 +14,7 @@ function ProductList() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(1000000); // Default max price
+  const [maxPrice, setMaxPrice] = useState(100000000); // Default max price
   const [maxMileage, setMaxMileage] = useState(2000000); // Default max mileage
   const [selectedModels, setSelectedModels] = useState([]);
   const [models, setModels] = useState([]); // To store unique car models
@@ -28,7 +28,7 @@ function ProductList() {
         if (response.data && Array.isArray(response.data.products)) {
           setProducts(response.data.products);
           setFilteredProducts(response.data.products);
-          console.log("Fetched products:", response.data.products);
+          //console.log("Fetched products:", response.data.products);
 
           // Extract unique models for checkboxes
           const uniqueModels = [

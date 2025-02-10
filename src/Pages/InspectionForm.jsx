@@ -5,7 +5,7 @@ import Select from "react-select";
 import Arrow from '../assets/SlotBooking/Arrow.svg';
 import  MainHeader from '../components/MainHeader';
 import FooterOne from '../components/InspectionFooter';
-import "flatpickr/dist/themes/dark.css"; // Theme that matches your form
+import "flatpickr/dist/themes/dark.css";
 import Flatpickr from "react-flatpickr";
 import { CalendarDays } from "lucide-react";
 import { motion } from "framer-motion";
