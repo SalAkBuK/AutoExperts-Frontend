@@ -101,7 +101,7 @@ function UsedProducts() {
           
           <span className="px-3 py-1 bg-custom-blue-bg text-custom-blue-text rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-[15px] flex items-center space-x-2">
             <FaCogs className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-custom-blue-text" />
-            <span>Automatic</span>
+            <span>{car.Transmission}</span>
           </span>
           
           <span className="px-3 py-1 bg-custom-blue-bg text-custom-blue-text rounded-full text-xs sm:text-sm md:text-base lg:text-lg xl:text-[15px] flex items-center space-x-2">

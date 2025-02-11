@@ -53,9 +53,10 @@ const OurServices = forwardRef((props, ref) => {
 
   return (
     <section ref={ref} className="bg-white py-16 px-6 md:px-20 rounded-t-7xl text-white relative -mt-20">
-      <h2 className="text-5xl font-extrabold text-center mb-12 text-black">
-        <span className="text-orange-500">/</span> OUR SERVICES
-      </h2>
+      <h2 className="text-3xl sm:text-5xl font-extrabold text-center mb-12 text-black">
+  <span className="text-orange-500">/</span> OUR SERVICES
+</h2>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {services.map((service, index) => (
           <div

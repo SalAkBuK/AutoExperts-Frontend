@@ -3,8 +3,8 @@ import React from 'react';
 const ReadyToSignUp = ({ scrollToServices }) => {
   return (
     <section className="bg-[#0A0D1C] text-white py-10 px-5 md:px-20">
-      <h2 className="text-6xl font-bold mb-8 text-center md:text-left">
-        <span className="text-orange-500 mr-2">/</span>READY TO SIGN UP?
+      <h2 className="text-3xl sm:text-5xl font-extrabold text-center mb-12 text-white">
+      <span className="text-orange-500">/</span>{" "}READY TO SIGN UP
       </h2>
 
 

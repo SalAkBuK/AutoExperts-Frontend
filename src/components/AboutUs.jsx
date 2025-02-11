@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 const AboutUs = () => {
   return (
     <div className=" relative -mb-40 bg-white p-8 md:p-12 lg:p-16 text-center rounded-b-7xl  max-w-8xl mx-auto ">
-      <h2 className="text-6xl font-bold mb-4 flex justify-center items-center mb-20">
-        <span className="text-orange-500 text-6xl mr-2">/</span>
+      <h2 className="text-3xl sm:text-5xl font-extrabold text-center mb-12 text-black">
+      <span className="text-orange-500">/</span>{" "}
         About Us
       </h2>
 
