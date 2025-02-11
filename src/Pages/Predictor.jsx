@@ -5,8 +5,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
 
-import AuctionHeader from '../components/AuctionHeader';
-import FooterOne from '../components/FooterOne';
+import  MainHeader from '../components/MainHeader';
+import FooterOne from '../components/InspectionFooter';
 
 function Predictor() {
   const [carData, setCarData] = useState([]);
@@ -95,7 +95,7 @@ function Predictor() {
 
   return (
     <div>
-      <AuctionHeader/>
+      <MainHeader/>
       <h2 className="text-5xl font-bold font-inter text-gray-800 antialiased text-[#2c3e50] text-center mt-5">
   Car Price Predictor
 </h2>
