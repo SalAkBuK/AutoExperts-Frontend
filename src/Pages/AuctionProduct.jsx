@@ -119,11 +119,14 @@ function AuctionProduct() {
   const highestBid = car.topBids.reduce((maxBid, bid) => (bid.bidAmount > maxBid.bidAmount ? bid : maxBid), car.topBids[0]) || {};
   const highestBidAmount = highestBid.bidAmount || car.initialBid || 'No bids yet';
 
-  const currentTime = new Date();
-  console.log(currentTime)
-  const auctionEndTime = new Date(car.auctionEndTime); 
-  const auctionEnded = currentTime >= auctionEndTime;
+  
+ 
 
+  const currentTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Karachi" });
+  const auctionEndTime = new Date(car.auctionEndTime).toLocaleString("en-US", { timeZone: "Asia/Karachi" });
+  
+  const auctionEnded = new Date(currentTime) >= new Date(auctionEndTime);
+  console.log("Auction ENDED and Current Time", auctionEndTime, currentTime);
   return (
     <MemberLayout> 
     <div>
@@ -144,11 +147,12 @@ function AuctionProduct() {
             </p>
             <div className="flex items-center justify-start sm:col-span-2">
               <span className="px-4 py-2 rounded-full text-red-600 bg-red-200 bg-opacity-30 text-base font-semibold flex items-center">
-              {new Date() < new Date(car.auctionEndTime) ? (
-    <AuctionTimer auctionEndTime={car.auctionEndTime} />
-  ) : (
-    'Auction Ended'
-  )}
+              {!auctionEnded ? (
+  <AuctionTimer auctionEndTime={car.auctionEndTime} />
+) : (
+  "Auction Ended"
+)}
+
               </span>
             </div>
           </div>
