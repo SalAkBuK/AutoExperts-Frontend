@@ -123,7 +123,17 @@ function AuctionPlatform() {
   const nextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
-  if (loading) return <div className="text-center">Loading...</div>;
+  
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+  <div className="flex flex-col items-center">
+    <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-t-4 border-b-4 border-blue-500"></div>
+    <p className="mt-4 text-base sm:text-xl">Loading...</p>
+  </div>
+</div>
+    );
+  }
   console.log(filteredProducts);
 
   return (
