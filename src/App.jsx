@@ -25,6 +25,8 @@ import SuccessForm from './Pages/Forms/success';
 import FailureForm from './Pages/Forms/fail';
 import ChatBot from './components/ChatBot';
 
+import Profile from './Pages/Profile';
+
 
 function App() {
 
@@ -52,6 +54,9 @@ function App() {
         <Route path='/ai-assistant' element={<ChatBot/>}/>
         <Route path="/forms/failure" element={<FailureForm />} />
         <Route path="/forms/success" element={<SuccessForm />} />
+
+        <Route path="/profile" element={<Profile />} />
+
 
         <Route path = "/auction-platform" element={<AuctionPlatform />}/>
         <Route path = "/member-platform"  element={

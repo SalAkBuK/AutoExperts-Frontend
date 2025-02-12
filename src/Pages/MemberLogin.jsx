@@ -32,6 +32,7 @@ function MemberLogin() {
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       const memberId = decodedToken.id;
         console.log("Memberid:", memberId )
+        localStorage.setItem("memberId", memberId);
       // Store the token
       localStorage.setItem('token', token);
 

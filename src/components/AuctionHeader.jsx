@@ -73,12 +73,16 @@ const Navbar = () => {
         )}
          {isCarPage && (
           <div className="hidden lg:block">
+
+            <Link to="/profile">
             <button
-              onClick={handleLogout} // Logout on button click
+              
               className="bg-orange-500 text-white px-4 py-2 rounded-md text-lg font-medium hover:bg-orange-600 lg:mr-4"
             >
               <FaUserCircle size={26} />
             </button>
+            </Link>
+           
           </div>
         )}
       </div>
@@ -110,12 +114,12 @@ const Navbar = () => {
           )}
            {isCarPage && (
             <div className="mt-2">
-              <button
-                onClick={handleLogout} // Logout on button click for mobile view
-                className="block bg-orange-500 text-white px-4 py-2 text-lg font-medium hover:bg-orange-600"
-              >
-               <FaUserCircle size={20} />
-              </button>
+              <Link to="/profile">
+      <button className="bg-orange-500 text-white px-4 py-2 rounded-md text-lg font-medium hover:bg-orange-600 flex items-center gap-2">
+        <FaUserCircle size={20} />
+        Profile
+      </button>
+    </Link>
             </div>
           )}
         </div>
