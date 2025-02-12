@@ -122,11 +122,27 @@ function AuctionProduct() {
   
  
 
-  const currentTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Karachi" });
-  const auctionEndTime = new Date(car.auctionEndTime).toLocaleString("en-US", { timeZone: "Asia/Karachi" });
+  const auctionEndTimeFixed = new Date(car.auctionEndTime);
+
+  // Get the current time in PKT
+  const currentTimePKT = new Date().toLocaleString("en-US", { timeZone: "Asia/Karachi" });
   
-  const auctionEnded = new Date(currentTime) >= new Date(auctionEndTime);
-  console.log("Auction ENDED and Current Time", auctionEndTime, currentTime);
+  // Convert auction end time to PKT
+  const auctionEndTimePKT = new Date(car.auctionEndTime).toLocaleString("en-US", {
+    timeZone: "Asia/Karachi",
+  });
+  
+  // Check if the auction has ended
+  const auctionEnded = new Date(currentTimePKT) >= new Date(auctionEndTimePKT);
+  
+  console.log(
+    "Auction ENDED:", auctionEnded,
+    "\nFixed Auction End Time (PKT):", auctionEndTimePKT,
+    "\nCurrent Time (PKT):", currentTimePKT
+  );
+  
+
+
   return (
     <MemberLayout> 
     <div>

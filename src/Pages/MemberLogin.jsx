@@ -36,7 +36,8 @@ function MemberLogin() {
       localStorage.setItem('token', token);
 
       // Redirect to DisplayAllCars with the memberId
-      navigate('/auction-platform', { state: { memberId } });
+      navigate('/auction-platform', { state: { memberId }, replace: true });
+
       //navigate('/member-platform', { state: { memberId } });
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
