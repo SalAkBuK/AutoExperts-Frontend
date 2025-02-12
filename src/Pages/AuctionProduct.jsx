@@ -144,7 +144,7 @@ function AuctionProduct() {
 
 
   return (
-    <MemberLayout> 
+   
     <div>
     <AuctionHeader />
     
@@ -377,8 +377,7 @@ function AuctionProduct() {
     </div>
     <FooterOne/>
   </div>
-  </MemberLayout>
-  
+
   
   
 

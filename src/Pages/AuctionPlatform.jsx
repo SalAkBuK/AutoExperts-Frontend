@@ -137,7 +137,7 @@ function AuctionPlatform() {
   console.log(filteredProducts);
 
   return (
-    <MemberLayout>
+ <>
       
       <div className="relative -mt-20  -ml-8 bg-white  py-12 px-4 sm:px-6 lg:px-8 shadow-lg">
       <AuctionHeader />
@@ -452,7 +452,7 @@ function AuctionPlatform() {
       
       </div>
       <FooterOne />
-    </MemberLayout>
+      </>
   );
 }
 

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/AdminLogin/Icon.png';
 import DownArrow from '../assets/MainHeader/DownArrow.svg';
-import { FaBars } from 'react-icons/fa';
+import { FaBars, FaUserCircle  } from 'react-icons/fa';
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const showAdminButton = location.pathname === '/auction-platform';
+  const isCarPage = location.pathname.startsWith('/car/');
   const [menuOpen, setMenuOpen] = useState(false);
 
   
@@ -70,6 +71,16 @@ const Navbar = () => {
             </button>
           </div>
         )}
+         {isCarPage && (
+          <div className="hidden lg:block">
+            <button
+              onClick={handleLogout} // Logout on button click
+              className="bg-orange-500 text-white px-4 py-2 rounded-md text-lg font-medium hover:bg-orange-600 lg:mr-4"
+            >
+              <FaUserCircle size={26} />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Mobile Menu Links - Visible only on small screens when menu is open */}
@@ -94,6 +105,16 @@ const Navbar = () => {
                 className="block bg-orange-500 text-white px-4 py-2 rounded-md text-lg font-medium hover:bg-orange-600"
               >
                 Logout
+              </button>
+            </div>
+          )}
+           {isCarPage && (
+            <div className="mt-2">
+              <button
+                onClick={handleLogout} // Logout on button click for mobile view
+                className="block bg-orange-500 text-white px-4 py-2 text-lg font-medium hover:bg-orange-600"
+              >
+               <FaUserCircle size={20} />
               </button>
             </div>
           )}
