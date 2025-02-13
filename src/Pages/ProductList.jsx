@@ -19,7 +19,7 @@ function ProductList() {
   const [selectedModels, setSelectedModels] = useState([]);
   const [models, setModels] = useState([]); // To store unique car models
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Added dropdown state
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
   const [isLoading, setIsLoading] = useState(true);
 
 
@@ -85,8 +85,11 @@ function ProductList() {
     setMaxMileage(20000000);
     setSelectedModels([]);
     setIsDropdownOpen(false); // Optionally close the dropdown if it's open
+    setFilteredProducts(products);
   };
 
+ 
+  
 
   if (isLoading) {
     return (
@@ -125,6 +128,9 @@ function ProductList() {
 >
   {isFilterOpen ? 'Hide Filters' : 'Show Filters'}
 </button>
+
+
+
 
 
 {/* Filter Section (Collapsible with smooth transition) */}

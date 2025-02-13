@@ -55,7 +55,7 @@ function App() {
         <Route path="/forms/failure" element={<FailureForm />} />
         <Route path="/forms/success" element={<SuccessForm />} />
 
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:memberId" element={<Profile />} />
 
 
         <Route path = "/auction-platform" element={<AuctionPlatform />}/>

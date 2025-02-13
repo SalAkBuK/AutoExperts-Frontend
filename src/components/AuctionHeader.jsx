@@ -10,7 +10,7 @@ const Navbar = () => {
   const showAdminButton = location.pathname === '/auction-platform';
   const isCarPage = location.pathname.startsWith('/car/');
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const memberId = localStorage.getItem("memberId");
   
   const handleLogout = () => {
     
@@ -71,20 +71,17 @@ const Navbar = () => {
             </button>
           </div>
         )}
-         {isCarPage && (
-          <div className="hidden lg:block">
+       {isCarPage && (
+  <div className="hidden lg:flex items-center">
+    <Link to={`/profile/${memberId}`}>
+      <button className="flex items-center gap-2 bg-orange-500 text-white px-5 py-2.5 rounded-lg text-lg font-medium hover:bg-orange-600 transition-all shadow-md">
+        <FaUserCircle size={26} />
+        <span>Profile</span>
+      </button>
+    </Link>
+  </div>
+)}
 
-            <Link to="/profile">
-            <button
-              
-              className="bg-orange-500 text-white px-4 py-2 rounded-md text-lg font-medium hover:bg-orange-600 lg:mr-4"
-            >
-              <FaUserCircle size={26} />
-            </button>
-            </Link>
-           
-          </div>
-        )}
       </div>
 
       {/* Mobile Menu Links - Visible only on small screens when menu is open */}
@@ -114,7 +111,7 @@ const Navbar = () => {
           )}
            {isCarPage && (
             <div className="mt-2">
-              <Link to="/profile">
+              <Link to="/profile/${}">
       <button className="bg-orange-500 text-white px-4 py-2 rounded-md text-lg font-medium hover:bg-orange-600 flex items-center gap-2">
         <FaUserCircle size={20} />
         Profile

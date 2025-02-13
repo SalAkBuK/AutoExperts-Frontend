@@ -82,6 +82,11 @@ function AuctionProduct() {
       return;
     }
 
+    if(parsedBidAmount> car.highestExpectedBid){
+      toast.error("Bid out of range");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -135,11 +140,6 @@ function AuctionProduct() {
   // Check if the auction has ended
   const auctionEnded = new Date(currentTimePKT) >= new Date(auctionEndTimePKT);
   
-  console.log(
-    "Auction ENDED:", auctionEnded,
-    "\nFixed Auction End Time (PKT):", auctionEndTimePKT,
-    "\nCurrent Time (PKT):", currentTimePKT
-  );
   
 
 
