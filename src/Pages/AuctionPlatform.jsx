@@ -19,11 +19,33 @@ function AuctionPlatform() {
   const location = useLocation();
   const { memberId } = location.state || {};
   const [filteredProducts, setFilteredProducts] = useState([]);
+
+
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(10000000000);
   const [maxMileage, setMaxMileage] = useState(200000000000);
   const [selectedModels, setSelectedModels] = useState([]);
   const [models, setModels] = useState([]);
+  const [sortedCars, setSortedCars] = useState([]);
+const [selectedCondition, setSelectedCondition] = useState([]);
+const [selectedColors, setSelectedColors] = useState([]);
+const [selectedFuelTypes, setSelectedFuelTypes] = useState([]);
+const [selectedTransmissions, setSelectedTransmissions] = useState([]);
+const [selectedFeatures, setSelectedFeatures] = useState([]);
+ 
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [titles, setTitles] = useState([]); // Store unique titles
+  const [searchTitle, setSearchTitle] = useState("");
+  const [selectedTitle, setSelectedTitle] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState(""); // Selected location
+  const [locations, setLocations] = useState([]); 
+
+
+
+
+
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -48,10 +70,24 @@ function AuctionPlatform() {
         );
 
         setCars(sortedCars);
+        setSortedCars(sortedCars);
         setFilteredProducts(sortedCars);
 
         const uniqueModels = [...new Set(sortedCars.map((car) => car.model))];
         setModels(uniqueModels);
+
+
+
+
+        const uniqueTitles = [...new Set(sortedCars.map((car) => car.title))];
+        setTitles(uniqueTitles);
+          
+          //console.log("Fetched products:", response.data.products);
+
+         
+          // Extract unique locations correctly
+const uniqueLocations = [...new Set(sortedCars.map((car) => car.carDetails))];
+setLocations(uniqueLocations);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching cars:', error);
@@ -63,59 +99,95 @@ function AuctionPlatform() {
 
   useEffect(() => {
     const applyFilters = () => {
-      console.log('Applying filters with:', { minPrice, maxPrice, maxMileage, selectedModels });
-      console.log('All cars:', cars);
+      console.log('Applying filters with:', { minPrice, maxPrice, maxMileage, selectedModels, location });
   
       // Default behavior: Show all cars if no filters are applied
-      if (!minPrice && !maxPrice && !maxMileage && selectedModels.length === 0) {
+      if (
+        minPrice === 0 && 
+        maxPrice === 100000000 &&
+        maxMileage === 20000000 &&
+        selectedModels.length === 0 &&
+        selectedCondition.length === 0 &&
+        selectedColors.length === 0 &&
+        selectedFuelTypes.length === 0 &&
+        selectedTransmissions.length === 0 &&
+        selectedFeatures.length === 0 &&
+        selectedTitle === "" &&
+        selectedLocation === ""
+      ) {
         setFilteredProducts(cars);
-      } else {
-        const filtered = cars.filter((car) => {
-          // Check conditions with proper defaults
-          const matchesPrice =
-            (minPrice == null || car.initialBid >= minPrice || car.highestBid >= minPrice) &&
-            (maxPrice == null || maxPrice === 0 || car.initialBid <= maxPrice || car.highestBid <= maxPrice);
-  
-          const matchesMileage = !maxMileage || car.mileage <= maxMileage;
-          const matchesModel = selectedModels.length === 0 || selectedModels.includes(car.model);
-  
-          console.log(`Car model: ${car.model}, Matches Model: ${matchesModel}`);
-          console.log(`Car ${car.title}: Price ${matchesPrice}, Mileage ${matchesMileage}, Model ${matchesModel}`);
-  
-          // Allow cars that match ALL active conditions
-          return matchesPrice && matchesMileage && matchesModel;
-        });
-  
-        // Update the filtered products state
-        setFilteredProducts(filtered);
+        return;
       }
+  
+      const filtered = cars.filter((car) => {
+        const matchesPrice =
+          (minPrice === 0 || car.initialBid >= minPrice || car.highestBid >= minPrice) &&
+          (maxPrice === 100000000 || car.initialBid <= maxPrice || car.highestBid <= maxPrice);
+  
+        const matchesMileage = maxMileage === 20000000 || car.mileage <= maxMileage;
+        const matchesModel = selectedModels.length === 0 || selectedModels.includes(car.model);
+        const matchesCondition = selectedCondition.length === 0 || selectedCondition.includes(car.Condition);
+        const matchesColor = selectedColors.length === 0 || selectedColors.includes(car.Color);
+        const matchesFuelType = selectedFuelTypes.length === 0 || selectedFuelTypes.includes(car.FuelType);
+        const matchesTransmission = selectedTransmissions.length === 0 || selectedTransmissions.includes(car.Transmission);
+        const matchesFeatures = selectedFeatures.length === 0 || selectedFeatures.some(feature => car.SelectedFeatures.includes(feature));
+        const matchesTitle = selectedTitle === "" || car.title.toLowerCase().includes(selectedTitle.toLowerCase());
+        const matchesLocation = selectedLocation === "" || car.carDetails === selectedLocation; // Ensure correct location filtering
+  
+        console.log(`Car ${car.title}: Price ${matchesPrice}, Mileage ${matchesMileage}, Model ${matchesModel}, Location ${matchesLocation}`);
+  
+        // Ensure ALL conditions match
+        return (
+          matchesPrice &&
+          matchesMileage &&
+          matchesModel &&
+          matchesCondition &&
+          matchesColor &&
+          matchesFuelType &&
+          matchesTransmission &&
+          matchesFeatures &&
+          matchesTitle &&
+          matchesLocation
+        );
+      });
+  
+      setFilteredProducts(filtered);
     };
   
-    console.log("Applying Filters...");
-    console.log("Min Price:", minPrice, "Max Price:", maxPrice);
-    console.log("All Cars Before Filtering:", cars);
-    cars.forEach(car => console.log(`Car ${car.title} - Price: ${car.price} (Type: ${typeof car.price})`));
-  
     applyFilters();
-  }, [minPrice, maxPrice, maxMileage, selectedModels, cars]);
+  }, [
+    minPrice, maxPrice, maxMileage, 
+    selectedModels, selectedCondition, 
+    selectedColors, selectedFuelTypes, 
+    selectedTransmissions, selectedFeatures, 
+    selectedTitle, selectedLocation, cars
+  ]);
   
 
   const handleModelChange = (model) => {
     setSelectedModels((prev) =>
       prev.includes(model)
-        ? prev.filter((m) => m !== model)
-        : [...prev, model]
+        ? prev.filter((m) => m !== model) // Remove if already selected
+        : [...prev, model] // Add if not selected
     );
   };
+  
 
   const resetFilters = () => {
     setMinPrice(0);
-    setMaxPrice(10000000);
-    setMaxMileage(2000000);
+    setMaxPrice(100000000);
+    setMaxMileage(20000000);
     setSelectedModels([]);
+    setSelectedCondition([]);
+    setSelectedColors([]);
+    setSelectedFuelTypes([]);
+    setSelectedTransmissions([]);
+    setSelectedFeatures([]);
+    setSelectedTitle("");  // ✅ Reset search input
+    setSelectedLocation("");       // ✅ Reset location dropdown
     setIsDropdownOpen(false); // Optionally close the dropdown if it's open
+    setFilteredProducts(sortedCars); // ✅ Reset to full product list
   };
-
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentItems = filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
@@ -159,111 +231,170 @@ function AuctionPlatform() {
 
     {/* Filter Section */}
     <motion.div
-      initial={{ opacity: 1, maxHeight: 50 }}
-      animate={{
-        opacity: isFilterOpen ? 1 : 0,
-        maxHeight: isFilterOpen ? 500 : 0,
-      }}
-      transition={{ duration: 0.8, ease: 'easeInOut' }}
-      className="mb-8 p-6 border border-gray-300 rounded-lg bg-white shadow-lg overflow-hidden"
-    >
-      <h3 className="text-xl font-semibold mb-4 text-gray-800">Filters</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Price Range */}
-        <div className="space-y-4">
-          <label className="block text-sm font-medium text-gray-700">Price Range</label>
-          <input
-            type="range"
-            min="0"
-            max="10000000"
-            step="1000"
-            value={minPrice}
-            onChange={(e) => setMinPrice(Number(e.target.value))}
-            className="w-full bg-blue-100 rounded-md"
-          />
-          <input
-            type="range"
-            min="0"
-            max="10000000"
-            step="1000"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(Number(e.target.value))}
-            className="w-full bg-blue-100 rounded-md"
-          />
-          <div className="flex justify-between text-sm">
-            <span>Min: PKR{minPrice}</span>
-            <span>Max: PKR{maxPrice}</span>
-          </div>
-        </div>
+  initial={{ opacity: 0, maxHeight: 0 }}
+  animate={{ opacity: isFilterOpen ? 1 : 0, maxHeight: isFilterOpen ? 600 : 0 }}
+  transition={{ duration: 0.8, ease: "easeInOut" }}
+  className="mb-8 p-6 border border-gray-300 rounded-lg bg-white shadow-lg overflow-visible"
+>
+  <h3 className="text-xl font-semibold mb-4 text-gray-800">Filters</h3>
 
-        {/* Mileage */}
-        <div className="space-y-4">
-          <label className="block text-sm font-medium text-gray-700">Maximum Mileage</label>
-          <input
-            type="range"
-            min="0"
-            max="200000"
-            step="1000"
-            value={maxMileage}
-            onChange={(e) => setMaxMileage(Number(e.target.value))}
-            className="w-full bg-green-100 rounded-md"
-          />
-          <div className="text-sm text-right">{maxMileage} miles</div>
-        </div>
+  {/* Scrollable Wrapper for Small Screens */}
+  <div className="max-h-[400px] overflow-auto md:max-h-full">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 
-        {/* Car Models Dropdown */}
-        <div className="space-y-4">
-          <label className="block text-sm font-medium text-gray-700 text-left">
-            Car Models
-          </label>
-          <div className="relative w-full">
+      {/* Title Search Field */}
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">Search Title</label>
+        <div className="relative">
+          <input
+            type="text"
+            value={selectedTitle || searchTitle}
+            onChange={(e) => {
+              setSearchTitle(e.target.value);
+              setSelectedTitle(""); // Clear selected title when user types
+            }}
+            placeholder="Type to search..."
+            className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700"
+          />
+          {selectedTitle && (
             <button
-              type="button"
-              onClick={() => setIsDropdownOpen((prev) => !prev)} // Toggle dropdown visibility
-              className="w-full px-4 py-2 border rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onClick={() => setSelectedTitle("")}
+              className="absolute right-3 top-2 text-gray-500 hover:text-gray-700"
             >
-              Select Models
-              <span className="ml-2">{isDropdownOpen ? "▲" : "▼"}</span>
+              ❌
             </button>
-            {isDropdownOpen && (
-              <div
-                className="absolute z-10 mt-2 w-full bg-white border rounded-md shadow-lg max-h-[300px] overflow-y-auto"
-                style={{
-                  height: 'auto',  // Allow the dropdown to expand based on content
-                }}
-              >
-                <div className="p-4 grid grid-cols-2 gap-4">
-                  {models.map((model) => (
-                    <div key={model} className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id={model}
-                        checked={selectedModels.includes(model)}
-                        onChange={() => handleModelChange(model)}
-                        className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-0"
-                      />
-                      <label htmlFor={model} className="text-sm text-gray-700">
-                        {model}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+          )}
+        </div>
+
+        {/* Filtered Titles List */}
+        {searchTitle && (
+          <ul className="border border-gray-300 rounded-md bg-white max-h-40 overflow-y-auto mt-1 shadow-md">
+            {titles
+              .filter(title => title.toLowerCase().includes(searchTitle.toLowerCase()))
+              .map(filteredTitle => (
+                <li
+                  key={filteredTitle}
+                  onClick={() => {
+                    setSelectedTitle(filteredTitle);
+                    setSearchTitle(""); // Clear search input after selection
+                  }}
+                  className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                >
+                  {filteredTitle}
+                </li>
+              ))}
+          </ul>
+        )}
+      </div>
+
+      {/* Select Location */}
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">Select Location</label>
+        <select
+          value={selectedLocation}
+          onChange={(e) => setSelectedLocation(e.target.value)}
+          className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 bg-white"
+        >
+          <option value="">Choose a location</option>
+          {locations.map((loc, index) => (
+            <option key={index} value={loc}>
+              {loc}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Select Models */}
+      <div className="relative space-y-2">
+        <label className="block text-sm font-medium text-gray-700">Select Models</label>
+        <button
+          type="button"
+          onClick={() => setIsDropdownOpen((prev) => !prev)}
+          className="w-full px-4 py-2 border rounded-md bg-white text-gray-700 flex justify-between items-center"
+        >
+          <span>{selectedModels.length > 0 ? `${selectedModels.length} selected` : "Choose models"}</span>
+          <span>{isDropdownOpen ? "▲" : "▼"}</span>
+        </button>
+
+        {/* Dropdown Menu */}
+        {isDropdownOpen && (
+          <div className="absolute z-10 mt-2 w-full bg-white border rounded-md shadow-lg max-h-[250px] overflow-y-auto">
+            <div className="p-4 grid grid-cols-2 gap-4">
+              {models.length > 0 ? (
+                models.map((model) => (
+                  <div key={model} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id={model}
+                      checked={selectedModels.includes(model)}
+                      onChange={() => handleModelChange(model)}
+                      className="h-4 w-4 border-gray-300 text-blue-600 cursor-pointer"
+                    />
+                    <label htmlFor={model} className="text-sm text-gray-700 cursor-pointer">
+                      {model}
+                    </label>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-gray-500 text-center">No models available</p>
+              )}
+            </div>
           </div>
+        )}
+      </div>
+
+      {/* Price Range */}
+      <div className="space-y-4">
+        <label className="block text-sm font-medium text-gray-700">Price Range</label>
+        <input type="range" min="0" max="1000000" step="1000" value={minPrice} onChange={(e) => setMinPrice(Number(e.target.value))} className="w-full bg-blue-100 rounded-md" />
+        <input type="range" min="0" max="100000000" step="1000" value={maxPrice} onChange={(e) => setMaxPrice(Number(e.target.value))} className="w-full bg-blue-100 rounded-md" />
+        <div className="flex justify-between text-sm">
+          <span>Min: PKR{minPrice}</span>
+          <span>Max: PKR{maxPrice}</span>
         </div>
       </div>
 
-      {/* Reset Filters Button */}
-      <div className="mt-3 flex justify-end">
-        <button
-          onClick={resetFilters}
-          className="text-red-600 font-semibold px-4 py-2 border border-red-600 hover:bg-red-600 hover:text-white rounded-md"
-        >
-          Reset Filters
-        </button>
+      {/* Maximum Mileage */}
+      <div className="space-y-4">
+        <label className="block text-sm font-medium text-gray-700">Maximum Mileage</label>
+        <input type="range" min="0" max="20000000" step="1000" value={maxMileage} onChange={(e) => setMaxMileage(Number(e.target.value))} className="w-full bg-green-100 rounded-md" />
+        <div className="text-sm text-right">{maxMileage} miles</div>
       </div>
-    </motion.div>
+
+      {/* Dynamic Filters */}
+      {[
+        { label: "Condition", state: selectedCondition, setState: setSelectedCondition, options: ["New", "Used"] },
+        { label: "Color", state: selectedColors, setState: setSelectedColors, options: ["Red", "Blue", "Black", "White"] },
+        { label: "Fuel Type", state: selectedFuelTypes, setState: setSelectedFuelTypes, options: ["Petrol", "Diesel", "Electric", "Hybrid"] },
+        { label: "Transmission", state: selectedTransmissions, setState: setSelectedTransmissions, options: ["Automatic", "Manual"] },
+        { label: "Features", state: selectedFeatures, setState: setSelectedFeatures, options: ["Sunroof", "Traction Control", "AWD", "Cruise Control"] },
+      ].map(({ label, state, setState, options }) => (
+        <div key={label} className="space-y-4">
+          <label className="block text-sm font-medium text-gray-700">{label}</label>
+          <div className="grid grid-cols-2 gap-2">
+            {options.map((option) => (
+              <div key={option} className="flex items-center space-x-2">
+                <input type="checkbox" id={option} checked={state.includes(option)} onChange={() => setState((prev) => (prev.includes(option) ? prev.filter((i) => i !== option) : [...prev, option]))} className="h-4 w-4 border-gray-300 text-blue-600" />
+                <label htmlFor={option} className="text-sm text-gray-700">{option}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Reset Filters Button */}
+  <div className="mt-3 flex justify-end">
+    <button 
+      onClick={resetFilters} 
+      className="text-red-600 font-semibold px-4 py-2 border border-red-600 hover:bg-red-600 hover:text-white rounded-md"
+    >
+      Reset Filters
+    </button>
+  </div>
+</motion.div>
+
 
              {/* View Toggle */}
              <div className="flex justify-end mb-6">

@@ -33,12 +33,7 @@ const AuctionTimer = ({ auctionEndTime }) => {
 
   const auctionEnded = timeLeft <= 0;
 
-  // Logs for debugging
-  console.log("Auction End Time (UTC):", moment.utc(auctionEndTime).format("YYYY-MM-DD HH:mm:ss"));
-  console.log("Converted Auction End Time (PKT):", auctionEndTimePKT.format("YYYY-MM-DD hh:mm:ss A"));
-  console.log("Current Time (PKT):", moment().tz("Asia/Karachi").format("YYYY-MM-DD hh:mm:ss A"));
-  console.log("Time Left:", timeLeft, "seconds");
-
+  
   return (
     <div className="flex items-center text-xs sm:text-sm font-semibold text-red-600 bg-opacity-20 bg-red-600 rounded-full px-2 py-1 w-auto max-w-full whitespace-nowrap">
     <FaRegClock className="mr-1 sm:mr-2 text-gray-600" />
