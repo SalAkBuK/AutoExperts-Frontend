@@ -168,7 +168,7 @@ const resetFilters = () => {
   initial={{ opacity: 0, maxHeight: 0 }}
   animate={{ opacity: isFilterOpen ? 1 : 0, maxHeight: isFilterOpen ? 600 : 0 }}
   transition={{ duration: 0.8, ease: "easeInOut" }}
-  className="mb-8 p-6 border border-gray-300 rounded-lg bg-white shadow-lg overflow-visible"
+  className="mb-8 p-6 border border-gray-300 rounded-lg bg-white shadow-lg overflow-hidden"
 >
   <h3 className="text-xl font-semibold mb-4 text-gray-800">Filters</h3>
 

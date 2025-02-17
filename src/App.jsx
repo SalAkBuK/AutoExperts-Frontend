@@ -38,7 +38,6 @@ function App() {
        <ScrollToTop />
       <Routes>
         <Route path="/" element={ <LandingPage />} />
-        <Route path="/admin" element={ <AdminLogin />} />
         <Route path= "/dashboard" element = {<AdminDashboard/>} />
         <Route path= "/booking-form" element = {<InspectionForm/>} />
         <Route path= "/booking-details" element = {<CheckBooking/>} />

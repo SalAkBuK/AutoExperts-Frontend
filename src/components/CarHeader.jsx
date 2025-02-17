@@ -5,7 +5,7 @@ import DownArrow from '../assets/MainHeader/DownArrow.svg';
 
 const Navbar = () => {
   const location = useLocation();
-  const showAdminButton = location.pathname === '/';
+ 
 
   return (
     <nav className="pb-10 bg-[#0A0D1C] border-gray-200 ">
@@ -65,13 +65,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {showAdminButton && (
-          <div>
-            <Link to="/admin" className="bg-orange-500 text-white px-4 py-2 rounded-md text-lg font-medium hover:bg-orange-600">
-              Admin Portal
-            </Link>
-          </div>
-        )}
+     
       </div>
     </nav>
   );

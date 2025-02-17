@@ -343,16 +343,7 @@ setLocations(uniqueLocations);
         )}
       </div>
 
-      {/* Price Range */}
-      <div className="space-y-4">
-        <label className="block text-sm font-medium text-gray-700">Price Range</label>
-        <input type="range" min="0" max="1000000" step="1000" value={minPrice} onChange={(e) => setMinPrice(Number(e.target.value))} className="w-full bg-blue-100 rounded-md" />
-        <input type="range" min="0" max="100000000" step="1000" value={maxPrice} onChange={(e) => setMaxPrice(Number(e.target.value))} className="w-full bg-blue-100 rounded-md" />
-        <div className="flex justify-between text-sm">
-          <span>Min: PKR{minPrice}</span>
-          <span>Max: PKR{maxPrice}</span>
-        </div>
-      </div>
+  
 
       {/* Maximum Mileage */}
       <div className="space-y-4">
